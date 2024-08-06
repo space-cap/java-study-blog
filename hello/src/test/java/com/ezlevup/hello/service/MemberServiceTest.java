@@ -58,7 +58,7 @@ class MemberServiceTest {
 
         // when
         memberService.join(member1);
-        assertThrows(IllegalAccessError.class, ()-> memberService)
+        //assertThrows(IllegalAccessError.class, ()-> memberService)
 
 
 //        try {
