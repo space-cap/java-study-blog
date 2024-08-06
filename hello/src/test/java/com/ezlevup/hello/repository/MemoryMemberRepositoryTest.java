@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MemoryMemberRepositoryTest {
 
@@ -43,7 +44,17 @@ public class MemoryMemberRepositoryTest {
         member2.setName("spring2");
         repository.save(member2);
 
-        Member result = repository.findByName("sprint1").get();
+        //Member result = repository.findByName("sprint1").get();
+
+        Optional<Member> memberOptional = repository.findByName("sprint1");
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
+            // member를 사용하여 필요한 작업 수행
+        } else {
+            // 값이 없을 때의 처리
+            System.out.println("해당 이름의 멤버를 찾을 수 없습니다.");
+        }
+
 
     }
 
