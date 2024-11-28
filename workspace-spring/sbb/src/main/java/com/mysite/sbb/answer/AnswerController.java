@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import java.security.Principal;
@@ -31,9 +33,9 @@ public class AnswerController {
     
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
-    public String createAnswer(Model model, @PathVariable("id") Integer id, 
+    public String createAnswer(Model model, @PathVariable("id") Integer id, HttpServletRequest request,
             @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
-        Question question = this.questionService.getQuestion(id);
+        Question question = this.questionService.getQuestion(id, request);
         SiteUser siteUser = this.userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
             model.addAttribute("question", question);
