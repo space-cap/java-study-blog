@@ -47,4 +47,8 @@ public class Question {
     
     @ManyToMany
     Set<SiteUser> voter;
+    
+    // 조회 수 필드 추가
+    @Column(columnDefinition = "INTEGER DEFAULT 0", nullable = false)
+    private int viewCount = 0;
 }
