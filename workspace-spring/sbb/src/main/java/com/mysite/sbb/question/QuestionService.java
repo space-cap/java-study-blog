@@ -22,9 +22,6 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.data.jpa.domain.Specification;
 
 
@@ -58,21 +55,12 @@ public class QuestionService {
         return this.questionRepository.findAll();
     }
     
-    public Question getQuestion(Integer id, HttpServletRequest request) {  
+    public Question getQuestion(Integer id) {  
         Optional<Question> question = this.questionRepository.findById(id);
         if (question.isPresent()) {
-        	
-        	String clientIp = request.getRemoteAddr();
-            String viewedKey = "VIEWED_" + id;
-        	
-            HttpSession session = request.getSession();
-            if (session.getAttribute(viewedKey) == null) {
-	        	// 조회 수 증가
-	            question.get().setViewCount(question.get().getViewCount() + 1);
-	            questionRepository.save(question.get()); // 변경 사항 저장
-	            
-	            session.setAttribute(viewedKey, clientIp);
-            }
+        	// 조회 수 증가
+            question.get().setViewCount(question.get().getViewCount() + 1);
+            questionRepository.save(question.get()); // 변경 사항 저장
             
             return question.get();
         } else {
