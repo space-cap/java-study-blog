@@ -5,7 +5,7 @@ public class OperatorEx3 {
 
         int x = 5;
 
-        x = x++ - ++x; // x의 값은?
+        x = x++ - ++x; // x의 값은? 5 - 7 = -2
 
         System.out.println(x);
     }
