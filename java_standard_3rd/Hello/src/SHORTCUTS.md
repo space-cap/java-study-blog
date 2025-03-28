@@ -11,4 +11,8 @@ Press [Shift+F9] to start debugging your code. We have set one <icon src="AllIco
 Intellij 대소문자  변환 단축키
 Command + shift + U
 
+코드 정렬
+Command + option + L
+Ctrl + Alt + L(Windows 기준)을 누르면 된다. 바로 정렬
+Ctrl + Alt + Shift + L(Windows 기준)을 누르면 된다. 팝업창으로 옵션 조절
 

@@ -11,7 +11,7 @@ public class TypeCastingEx3 {
         System.out.printf("[int->byte] i=%d -> b=%d%n", i, b);
 
         b=10;
-        i=(int)b;
+        i=b;
         System.out.printf("[byte->int] b=%d -> i=%d%n", b, i);
 
         b=-2;
@@ -20,4 +20,9 @@ public class TypeCastingEx3 {
 
         System.out.println("i=" + Integer.toBinaryString(i));
     }
+
+    public static void add(int a, int b) {
+        System.out.println("a + b = " + (a + b));
+    }
+
 }
