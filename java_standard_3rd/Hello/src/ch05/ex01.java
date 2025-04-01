@@ -10,18 +10,16 @@ public class ex01 {
         boolean result = 'A' <= ch && ch <= 'Z' || 'a' <= ch && ch <= 'z' || '0' <= ch && ch <= '9';
         System.out.println(result);
 
-        int sum = 0;
-        for (int i = 1; ; i++) {
-            sum += i;
-            if (i % 2 == 0) {
-                sum += -i;
+        int i = 0, j = 0;
+        while (i <= 10) {
+            while (j <= i) {
+                System.out.print("*");
+                j++;
             }
-            if (sum > 100) {
-                System.out.println(i);
-                break;
-            }
+            System.out.println();
+            i++;
+            j = 0;
         }
-
 
     }
 }
