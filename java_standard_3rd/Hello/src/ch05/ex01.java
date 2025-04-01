@@ -18,8 +18,8 @@ public class ex01 {
         int num2 = 1;
         int num3 = 0;
 
-        System.out.print(num1);
-        System.out.print(num2);
+        System.out.print(num1 + ", ");
+        System.out.print(num2 + ", ");
         for (int i = 0; i < 8; i++) {
             num3 = num1 + num2;
             System.out.print(num3 + ",");
