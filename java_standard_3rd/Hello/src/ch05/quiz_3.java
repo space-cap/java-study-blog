@@ -34,6 +34,6 @@ public class quiz_3 {
             System.out.print(i % 3 == 0 ? i / 3 + " " : (i / 3) + 1 + " ");
         }
 
-        
+
     }
 }
