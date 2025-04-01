@@ -9,5 +9,16 @@ public class ex01 {
         char ch = 'z';
         boolean result = 'A' <= ch && ch <= 'Z' || 'a' <= ch && ch <= 'z' || '0' <= ch && ch <= '9';
         System.out.println(result);
+
+        int sum = 0;
+        for (int i = 1; i <= 10; i++) {
+            for (int j = 1; j <= i; j++) {
+                System.out.print(j);
+                sum += j;
+            }
+            System.out.println();
+        }
+
+        System.out.println(sum);
     }
 }
