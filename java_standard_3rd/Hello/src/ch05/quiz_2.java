@@ -16,7 +16,6 @@ public class quiz_2 {
             }
         }
 
-
         // 정렬
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr.length - 1 - i; j++) {
@@ -34,8 +33,8 @@ public class quiz_2 {
         }
 
         System.out.println();
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + ", ");
+        for (int j : arr) {
+            System.out.print(j + ", ");
         }
 
     }
