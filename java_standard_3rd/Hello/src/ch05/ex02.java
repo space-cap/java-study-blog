@@ -3,22 +3,18 @@ package ch05;
 public class ex02 {
     public static void main(String[] args) {
 
-        String value = "123";
-        char ch = ' ';
-        boolean isNumber = false;
-
-        for(int i = 0; i < value.length(); i++) {
-            ch = value.charAt(i);
-            if (ch >= '0' && ch <= '9') {
-                isNumber = true;
-                break;
-            }
+        int number = 12321;
+        int tmp = number;
+        int result = 0;
+        while (tmp != 0) {
+            result = result * 10 + tmp % 10;
+            tmp /= 10;
         }
-
-        if (isNumber) {
-            System.out.println("The string contains a number.");
+        if (number == result) {
+            System.out.println("회문수입니다.");
         } else {
-            System.out.println("The string does not contain a number.");
+            System.out.println("회문수가 아닙니다.");
         }
+
     }
 }
