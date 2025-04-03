@@ -3,6 +3,7 @@ package ch06;
 public class VarArgsEx {
     public static void main(String[] args) {
         String[] strArr = {"100", "200", "300"};
+        String[] strArr2 = new String[]{"1", "2", "3"};
 
         System.out.println(concatenate("", "100", "200", "300"));
         System.out.println(concatenate("-", strArr));
