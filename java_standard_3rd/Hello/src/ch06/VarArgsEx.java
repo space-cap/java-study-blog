@@ -10,13 +10,12 @@ public class VarArgsEx {
         System.out.println(concatenate(",", new String[]{"1", "2", "3"}));
         System.out.println("[" + concatenate(",", new String[0]) + "]");
         System.out.println("[" + concatenate(",") + "]");
-
     }
 
     static String concatenate(String delim, String... args) {
         String result = "";
 
-        for(String str : args) {
+        for (String str : args) {
             result += str + delim;
         }
 
