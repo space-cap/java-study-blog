@@ -9,10 +9,10 @@ public class quiz2 {
     public static void main(String[] args) {
         int[][] arr = {
                 {0, 0, 0, 0, 1},
-                {0, 0, 0, 0, 1},
+                {0, 0, 0, 1, 1},
                 {1, 1, 1, 1, 1},
                 {1, 1, 1, 1, 1},
-                {0, 0, 0, 0, 1}
+                {1, 0, 0, 0, 1}
         };
 
         System.out.println(bingoCnt(arr));
@@ -136,15 +136,50 @@ public class quiz2 {
 
         // 가로
         for (int i = 0; i < arr.length; i++) {
+            isBingo = true;
             for (int j = 0; j < arr[i].length; j++) {
-                if(arr[i][j] == 0) {
+                if (arr[i][j] == 0) {
                     isBingo = false;
                     break;
                 }
             }
-            if (isBingo == true) {
+            if (isBingo) {
                 cnt++;
             }
+        }
+
+        for (int i = 0; i < arr.length; i++) {
+            isBingo = true;
+            for (int j = 0; j < arr[i].length; j++) {
+                if (arr[j][i] == 0) {
+                    isBingo = false;
+                    break;
+                }
+            }
+            if (isBingo) {
+                cnt++;
+            }
+        }
+
+        // 대각선
+        boolean isBingo1 = true;
+        boolean isBingo2 = true;
+        for (int i = 0; i < arr.length; i++) {
+            // 우하 대각선
+            if (arr[i][i] == 0) {
+                isBingo1 = false;
+            }
+
+            // 우상 대각선
+            if (arr[i][arr.length - 1 - i] == 0) {
+                isBingo2 = false;
+            }
+        }
+        if (isBingo1) {
+            cnt++;
+        }
+        if (isBingo2) {
+            cnt++;
         }
 
         return cnt;
