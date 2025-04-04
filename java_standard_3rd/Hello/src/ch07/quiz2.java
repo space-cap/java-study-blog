@@ -17,6 +17,7 @@ public class quiz2 {
 
         System.out.println(bingoCnt(arr));
         System.out.println(bingoCnt2(arr));
+        System.out.println(bingoCnt3(arr));
     }
 
     static int bingoCnt(int[][] arr) {
@@ -26,14 +27,14 @@ public class quiz2 {
         // 가로
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[i].length; j++) {
-                //System.out.print(i + ", " + j + " : ");
+                System.out.print(i + ", " + j + " : ");
                 sum += arr[i][j];
                 if (sum >= 5) {
                     cnt++;
                 }
             }
             sum = 0;
-            //System.out.println();
+            System.out.println();
         }
 
         //System.out.println("====================================");
@@ -87,25 +88,24 @@ public class quiz2 {
 
         // 가로
         for (int i = 0; i < arr.length; i++) {
+            sum = 0;
             for (int j = 0; j < arr[i].length; j++) {
                 sum += arr[i][j];
             }
             if (sum >= 5) {
                 cnt++;
             }
-            sum = 0;
         }
 
-        sum = 0;
         // 세로
         for (int i = 0; i < arr.length; i++) {
+            sum = 0;
             for (int j = 0; j < arr[i].length; j++) {
                 sum += arr[j][i];
             }
             if (sum >= 5) {
                 cnt++;
             }
-            sum = 0;
         }
 
         sum = 0;
@@ -124,6 +124,27 @@ public class quiz2 {
         }
         if (sum >= 5) {
             cnt++;
+        }
+
+        return cnt;
+    }
+
+
+    static int bingoCnt3(int[][] arr) {
+        int cnt = 0;
+        boolean isBingo = true;
+
+        // 가로
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                if(arr[i][j] == 0) {
+                    isBingo = false;
+                    break;
+                }
+            }
+            if (isBingo == true) {
+                cnt++;
+            }
         }
 
         return cnt;
