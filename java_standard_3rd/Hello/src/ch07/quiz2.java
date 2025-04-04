@@ -15,12 +15,12 @@ public class quiz2 {
                 {1, 0, 0, 0, 1}
         };
 
-        System.out.println(bingoCnt(arr));
+        System.out.println(bingoCnt1(arr));
         System.out.println(bingoCnt2(arr));
         System.out.println(bingoCnt3(arr));
     }
 
-    static int bingoCnt(int[][] arr) {
+    static int bingoCnt1(int[][] arr) {
         int cnt = 0;
         int sum = 0;
 
