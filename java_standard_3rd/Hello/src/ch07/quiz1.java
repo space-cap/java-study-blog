@@ -16,6 +16,12 @@ public class quiz1 {
         System.out.println(mid2(2, 1, 3));
         System.out.println(mid2(1, 2, 2));
         System.out.println(mid2(1, 1, 2));
+
+        System.out.println("=====================");
+        System.out.println(mid3(1, 2, 3));
+        System.out.println(mid3(2, 1, 3));
+        System.out.println(mid3(1, 2, 2));
+        System.out.println(mid3(1, 1, 2));
     }
 
     static int mid(int a, int b, int c) {
@@ -33,7 +39,7 @@ public class quiz1 {
             return -1;
         }
 
-        for(int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             for (int j = i + 1; j < args.length; j++) {
                 if (args[i] > args[j]) {
                     int temp = args[i];
@@ -44,6 +50,22 @@ public class quiz1 {
         }
 
         return args[1];
+    }
+
+    static int mid3(int a, int b, int c) {
+        if (a > b) {
+            if (a > c) {
+                return b > c ? b : c;
+            } else {
+                return a;
+            }
+        } else {
+            if (b > c) {
+                return a > c ? a : c;
+            } else {
+                return b;
+            }
+        }
     }
 
 }
