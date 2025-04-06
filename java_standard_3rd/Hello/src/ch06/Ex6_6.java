@@ -18,6 +18,6 @@ public class Ex6_6 {
 
     static void change(int x) {
         x = 1000;
-        System.out.println("change() x: " + x);
+        System.out.println("change() : x = " + x);
     }
 }
