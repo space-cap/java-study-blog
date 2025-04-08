@@ -24,10 +24,7 @@ public class Ex6_7 {
 
     static void change(Data2 d) {
         System.out.println("change() : d = " + Integer.toHexString(System.identityHashCode(d)));
-
         d.x = 1000;
         System.out.println("change() : x = " + d.x);
     }
-
-
 }
