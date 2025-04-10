@@ -20,37 +20,38 @@ class Calculator {
         System.out.println("문자열 길이: " + input.length());
 
         String[] singleWords = input.trim().split("");
+        int result = 0;
         for(int i = 0; i < singleWords.length-2; i+=2) {
             char ch1 = singleWords[i].charAt(0);
             char ch2 = singleWords[i+1].charAt(0);
             char ch3 = singleWords[i+2].charAt(0);
-            int result = cal(ch1, ch2, ch3, i);
+            result = calculate(ch1, ch2, ch3, i, result);
             System.out.println("result: " + result);
         }
     }
 
-    int result = 0;
-    int cal(char ch1, char ch2, char ch3, int idx) {
+
+    int calculate(char ch1, char ch2, char ch3, int idx, int preResult) {
         System.out.println(ch1 + " " + ch2 + " " + ch3);
 
         int num1 = Character.getNumericValue(ch1);
         int num2 = Character.getNumericValue(ch3);
 
         if(idx != 0) {
-            num1 = result;
+            num1 = preResult;
         }
 
         if (ch2 == '+') {
-            result = add(num1, num2);
+            return add(num1, num2);
         } else if (ch2 == '-') {
-            result = subtract(num1, num2);
+            return subtract(num1, num2);
         } else if (ch2 == '*') {
-            result = multiply(num1, num2);
+            return multiply(num1, num2);
         } else if (ch2 == '/') {
-            result = divide(num1, num2);
+            return divide(num1, num2);
         }
 
-        return result;
+        return 0;
     }
 
     int add(int a, int b) {
