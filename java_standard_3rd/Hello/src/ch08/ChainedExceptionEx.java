@@ -36,13 +36,18 @@ public class ChainedExceptionEx {
             throw new SpaceException("설치할 공간이 부족합니다.");
         }
 
-        if (!enoughMemory()) {
-            throw new MemoryException("메모리가 부족합니다.");
+        //if (!enoughMemory()) {
+        if (true) {
+            //throw new MemoryException("메모리가 부족합니다.");
+            throw new RuntimeException(new MemoryException("메모리가 부족합니다."));
         }
     }
 
-    static void copyFiles() {}
-    static void deleteTempFiles() {}
+    static void copyFiles() {
+    }
+
+    static void deleteTempFiles() {
+    }
 
     static boolean enoughSpace() {
         return false; // Simulate not enough space
@@ -58,12 +63,12 @@ public class ChainedExceptionEx {
             copyFiles();
         } catch (SpaceException e) {
             InstallException ie = new InstallException("설치 중 예외 발생");
-            ie.initCause(e); // Set the cause of the exception
-            throw ie; // Throw the new exception
+            ie.initCause(e);
+            throw ie;
         } catch (MemoryException me) {
             InstallException ie = new InstallException("설치 중 예외 발생");
-            ie.initCause(me); // Set the cause of the exception
-            throw ie; // Throw the new exception
+            ie.initCause(me);
+            throw ie;
         } finally {
             deleteTempFiles();
         }
