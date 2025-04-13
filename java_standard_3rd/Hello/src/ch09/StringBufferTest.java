@@ -13,7 +13,6 @@ public class StringBufferTest {
         while (sb.length() < 200) {
             sb.append("a");
 
-
             if (sb.capacity() != previousCapacity) {
                 System.out.printf("length: %3d → capacity 증가! %d → %d%n",
                         sb.length(), previousCapacity, sb.capacity());
