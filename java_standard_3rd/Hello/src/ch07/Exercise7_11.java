@@ -33,7 +33,10 @@ class MyTv2 {
 
     int prevChannel = 0;
     void gotoPrevChannel() {
-        // TODO Auto-generated method stub
+        if (prevChannel == 0) {
+            prevChannel = MIN_CHANNEL;
+        }
+        setChannel(prevChannel);
     }
 }
 
