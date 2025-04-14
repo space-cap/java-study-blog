@@ -1,4 +1,4 @@
-package Beginner;
+package beginner;
 
 public class VarargsOverloading {
     public static void printData(String message) {

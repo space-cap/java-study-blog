@@ -1,4 +1,4 @@
-package Beginner;
+package beginner;
 
 public class Person {
     private String name;

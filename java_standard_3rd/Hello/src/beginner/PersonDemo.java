@@ -1,4 +1,4 @@
-package Beginner;
+package beginner;
 
 public class PersonDemo {
     public static void main(String[] args) {

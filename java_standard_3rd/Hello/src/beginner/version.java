@@ -1,4 +1,4 @@
-package Beginner;
+package beginner;
 
 public class version {
     public static void main(String[] args) {

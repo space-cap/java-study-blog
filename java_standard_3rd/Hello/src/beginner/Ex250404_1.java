@@ -1,4 +1,4 @@
-package Beginner;
+package beginner;
 
 public class Ex250404_1 {
     public static void main(String[] args) {
