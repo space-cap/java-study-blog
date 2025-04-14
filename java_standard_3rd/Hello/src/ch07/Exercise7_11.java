@@ -33,9 +33,6 @@ class MyTv2 {
 
     int prevChannel = 0;
     void gotoPrevChannel() {
-        if (prevChannel == 0) {
-            prevChannel = MIN_CHANNEL;
-        }
         setChannel(prevChannel);
     }
 }
@@ -46,7 +43,12 @@ public class Exercise7_11 {
 
         t.setChannel(10);
         System.out.println("CH:" + t.getChannel());
-        t.setVolume(20);
-        System.out.println("VOL:" + t.getVolume());
+        t.setChannel(20);
+        System.out.println("CH:" + t.getChannel());
+        t.gotoPrevChannel();
+        System.out.println("CH:" + t.getChannel());
+        t.gotoPrevChannel();
+        System.out.println("CH:" + t.getChannel());
+
     }
 }
