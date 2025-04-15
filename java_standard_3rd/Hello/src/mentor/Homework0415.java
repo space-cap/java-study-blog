@@ -1,5 +1,6 @@
 package mentor;
 
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -7,8 +8,11 @@ class Car {
     private int moveNum;
     private final int MOVE_NUM = 1;
 
+    Car() {
+        this.moveNum = 1;
+    }
+
     private void move() {
-        System.out.println("자동차가 움직입니다.");
         moveNum += MOVE_NUM;
     }
 
@@ -48,14 +52,21 @@ public class Homework0415 {
             cars[i] = new Car();
         }
 
+        for (Car car : cars) {
+            car.display();
+        }
+        System.out.println();
+
+        Random random = new Random();
         for(int i=0;i<number;i++) {
             for (Car car : cars) {
-                int randomNum = (int) (Math.random() * 10) + 1;
+                int randomNum = random.nextInt(10);
                 car.checkMove(randomNum);
             }
             for (Car car : cars) {
                 car.display();
             }
+            System.out.println();
         }
 
     }
