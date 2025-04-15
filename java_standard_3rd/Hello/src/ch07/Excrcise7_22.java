@@ -1,5 +1,7 @@
 package ch07;
 
+import java.util.Objects;
+
 abstract class Shape722 {
     Point722 p;
 
@@ -78,7 +80,8 @@ class Rectangle722 extends Shape722 {
     }
 
     boolean isSquare() {
-        return width == height;
+        //return width == height;
+        return Objects.equals(width, height);
     }
 }
 
