@@ -6,20 +6,22 @@ import java.util.Scanner;
 
 class Car {
     private int moveNum;
-    private final int MOVE_NUM = 1;
+    private static final int MOVE_NUM = 1; // 이동할 때마다 증가하는 수
+    private static final int MIN_RANDOM_TO_MOVE = 4; // 4 이상일 때 이동
+    private static final int DEFAULT_MOVE_NUM = 1; // 초기값
 
     Car() {
-        this.moveNum = 1;
+        this.moveNum = DEFAULT_MOVE_NUM;
     }
 
-    private void move() {
-        moveNum += MOVE_NUM;
-    }
-
-    public void checkMove(int randomNum) {
-        if(randomNum > 4) {
-            move();
+    public void move(int randomNum) {
+        if(checkMove(randomNum)) {
+            moveNum += MOVE_NUM;
         }
+    }
+
+    private boolean checkMove(int randomNum) {
+        return randomNum > MIN_RANDOM_TO_MOVE;
     }
 
     public void display() {
@@ -30,7 +32,46 @@ class Car {
     }
 }
 
+class RaceTrack {
+    private final int carNum;
+    private final int number;
+    private Car[] cars;
+    private static final int RANDOM_BOUND = 10;
 
+    RaceTrack(int carNum, int number) {
+        this.carNum = carNum;
+        this.number = number;
+
+        initCars();
+    }
+
+    private void initCars() {
+        cars = new Car[carNum];
+        for (int i = 0; i < cars.length; i++) {
+            cars[i] = new Car();
+        }
+    }
+
+    public void startRace() {
+        display();
+
+        Random random = new Random();
+        for (int i = 0; i < number; i++) {
+            for (Car car : cars) {
+                int randomNum = random.nextInt(RANDOM_BOUND);
+                car.move(randomNum);
+            }
+            display();
+        }
+    }
+
+    private void display() {
+        for (Car car : cars) {
+            car.display();
+        }
+        System.out.println();
+    }
+}
 
 public class Homework0415 {
     public static void main(String[] args) {
@@ -47,27 +88,7 @@ public class Homework0415 {
         System.out.println("자동차 대수는 : " + value);
         System.out.println("시도할 회수는 : " + number);
 
-        Car[] cars = new Car[Integer.parseInt(value)];
-        for(int i=0;i<cars.length;i++) {
-            cars[i] = new Car();
-        }
-
-        for (Car car : cars) {
-            car.display();
-        }
-        System.out.println();
-
-        Random random = new Random();
-        for(int i=0;i<number;i++) {
-            for (Car car : cars) {
-                int randomNum = random.nextInt(10);
-                car.checkMove(randomNum);
-            }
-            for (Car car : cars) {
-                car.display();
-            }
-            System.out.println();
-        }
-
+        RaceTrack raceTrack = new RaceTrack(Integer.parseInt(value), number);
+        raceTrack.startRace();
     }
 }
