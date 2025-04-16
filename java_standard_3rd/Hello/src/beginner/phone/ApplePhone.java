@@ -11,4 +11,12 @@ public class ApplePhone {
         return getClass().getName() + "@" + Integer.toHexString(hashCode());
     }
 
+    public void turnOn() {
+        System.out.println("@@@ 애플 로고 @@@");
+    }
+
+    public void turnOff() {
+        System.out.println("띠로리로");
+    }
 }
+
