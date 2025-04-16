@@ -24,7 +24,7 @@ class Car {
         return randomNum > MIN_RANDOM_TO_MOVE;
     }
 
-    public void display() {
+    public void print() {
         for(int i = 0; i < moveNum; i++) {
             System.out.print("-");
         }
@@ -53,7 +53,7 @@ class RaceTrack {
     }
 
     public void startRace() {
-        display();
+        print();
 
         Random random = new Random();
         for (int i = 0; i < number; i++) {
@@ -61,13 +61,13 @@ class RaceTrack {
                 int randomNum = random.nextInt(RANDOM_BOUND);
                 car.move(randomNum);
             }
-            display();
+            print();
         }
     }
 
-    private void display() {
+    private void print() {
         for (Car car : cars) {
-            car.display();
+            car.print();
         }
         System.out.println();
     }
