@@ -77,13 +77,13 @@ class Truck extends Car {
 }
 
 class RaceTrack {
-    private final int carNum;
+    private final int carCount;
     private final int number;
     private ArrayList<Car> cars;
     private static final int RANDOM_BOUND = 10;
 
-    RaceTrack(int carNum, int number) {
-        this.carNum = carNum;
+    RaceTrack(int carCount, int number) {
+        this.carCount = carCount;
         this.number = number;
 
         initCars();
@@ -94,7 +94,7 @@ class RaceTrack {
     }
 
     private void initCars() {
-        cars = new ArrayList<>(carNum);
+        cars = new ArrayList<>(carCount);
     }
 
     public void startRace() {
