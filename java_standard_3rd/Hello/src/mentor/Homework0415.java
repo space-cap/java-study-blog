@@ -1,6 +1,7 @@
 package mentor;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -79,7 +80,7 @@ class Truck extends Car {
 class RaceTrack {
     private final int carCount;
     private final int number;
-    private ArrayList<Car> cars;
+    private List<Car> cars;
     private static final int RANDOM_BOUND = 10;
 
     RaceTrack(int carCount, int number) {

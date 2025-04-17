@@ -30,6 +30,6 @@ cmd + opt + B : 구현 보기
 opt + F7 : Usage 보기
 F2 : Symbol로 이동
 
-
-
+단축키 정리 잘 되어 있네.
+https://blog.jetbrains.com/ko/2020/03/11/top-15-intellij-idea-shortcuts_ko/
 
