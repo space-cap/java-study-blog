@@ -1,5 +1,20 @@
 package ch12;
 
+enum Kings {
+    CLOVER(1), HEART(2), DIAMOND(3), SPADE(4);
+
+    private final int value;
+
+    // 생성자 추가
+    Kings(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}
+
 
 class Card {
     enum Kind { CLOVER, HEART, DIAMOND, SPADE }
