@@ -17,8 +17,9 @@
 
 나(LottoAssistant) 전체 적인 관리. 돈. 당첨통계. 로또영수증들.  
 로또(Lotto) 로또 정보 보관. 로또 번호.  
-로또판매점(LottoStore) 로또 생성.  
-복권회사(LottoCompany) 당첨번호.  
+로또판매점(LottoStore) 로또 판매.  
+복권회사(LottoCompany) 당첨번호.  로또 번호생성.
+
 
 
 
