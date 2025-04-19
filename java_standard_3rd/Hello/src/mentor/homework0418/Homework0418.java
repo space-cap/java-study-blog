@@ -14,6 +14,46 @@ class Lotto {
     }
 }
 
+
+enum MatchResult {
+    SIX(6, 2_000_000_000),
+    FIVE(5, 1_500_000),
+    FOUR(4, 50_000),
+    THREE(3, 5_000),
+    NONE(0, 0);
+
+    private final int matchCount;
+    private final int prize;
+    private static final MatchResult[] CACHED_VALUES = values();
+
+    public static MatchResult[] cachedValues() {
+        return CACHED_VALUES;
+    }
+
+    MatchResult(int matchCount, int prize) {
+        this.matchCount = matchCount;
+        this.prize = prize;
+    }
+
+    public int getMatchCount() {
+        return matchCount;
+    }
+
+    public int getPrize() {
+        return prize;
+    }
+
+    public static MatchResult fromMatchCount(int matchCount) {
+        for (MatchResult result : cachedValues()) {
+            if (result.matchCount == matchCount) {
+                return result;
+            }
+        }
+        return NONE;
+    }
+}
+
+
 class LottoCompany {
 
     static List<Integer> createNumbers() {
@@ -39,18 +79,8 @@ class LottoCompany {
     }
 
     static int calculatePrizeAmount(int matchCount, int count) {
-        switch (matchCount) {
-            case 6:
-                return 2000000000*count;
-            case 5:
-                return 1500000*count;
-            case 4:
-                return 50000*count;
-            case 3:
-                return 5000*count;
-            default:
-                return 0;
-        }
+        MatchResult result = MatchResult.fromMatchCount(matchCount);
+        return result.getPrize() * count;
     }
 }
 
