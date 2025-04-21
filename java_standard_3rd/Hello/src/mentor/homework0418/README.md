@@ -1,4 +1,51 @@
 
+# 🎲 로또 계산기
+
+## **기능 요구사항**
+- 로또 구입 금액을 입력하면 구입 금액에 해당하는 로또를 발급해야 한다.
+- 로또 1장의 가격은 1000원이다.
+- 로또 번호를 자동으로 생성하고, 지난 주 당첨 번호와 비교하여 당첨 결과와 수익률을 계산해 준다.
+
+## 주요 기능
+- **로또 구매**: 입력한 금액에 따라 로또를 구매할 수 있다.
+- **로또 번호 생성**: 1~45 사이의 6개 번호를 중복 없이 무작위로 생성한다.
+- **당첨 번호 입력**: 지난 주 당첨 번호(6개)를 입력받아 결과를 비교한다.
+- **당첨 통계 출력**: 일치 개수별 당첨 횟수, 수익률을 계산하여 출력한다.
+
+## 클래스 다이어그램
+```mermaid
+classDiagram
+    class LottoAssistant {
+        -int money
+        -List<Lotto> lottos
+        -LottoCompany lottoCompany
+        +LottoAssistant(int money)
+        +buyLotto()
+        +checkWinningNumbers(List<int> winningNumbers)
+        +printStatistics()
+    }
+
+    class Lotto {
+        -List<int> numbers
+        +Lotto()
+    }
+
+    class LottoStore {
+        +Lotto buyLotto(int money)
+    }
+
+    class LottoCompany {
+        -List<int> winningNumbers
+        +LottoCompany()
+        +generateWinningNumbers()
+    }
+
+    LottoAssistant --> Lotto
+    LottoAssistant --> LottoStore
+    LottoAssistant --> LottoCompany
+```
+
+## history
 ### 🟡 2025년 4월 18일  
 파일 생성  
 심플하게 로또 번호를 생성하는 프로그램을 작성합니다.
