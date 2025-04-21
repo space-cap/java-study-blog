@@ -56,6 +56,7 @@ classDiagram
         - countMatchingNumbers(Lotto lotto, List~Integer~ winNums) int
         + checkLottoResult(List~Integer~ winNums)
         + calculateReturnRate(Map~Integer, Integer~ resultMap) double
+        + inputLastWeekWinningNumbers()
     }
 
     class Homework0418 {
@@ -68,7 +69,6 @@ classDiagram
     LottoCompany <.. LottoAssistant : <<static 사용>>
     LottoAssistant <.. LottoStore : <<사용>>
     Homework0418 --> LottoAssistant
-    Homework0418 --> LottoCompany
 ```
 
 ## history

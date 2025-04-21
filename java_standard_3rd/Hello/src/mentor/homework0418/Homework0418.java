@@ -119,6 +119,7 @@ class LottoAssistant {
     private List<Lotto> lottos;
     private int price;
     private int count;
+    List<Integer> winNum;
 
     boolean buyLottos(int price) {
         LottoStore store = new LottoStore();
@@ -148,11 +149,11 @@ class LottoAssistant {
         return matchCount;
     }
 
-    void checkLottoResult(List<Integer> winNums) {
+    void checkLottoResult() {
         Map<Integer, Integer> resultMap = new TreeMap<>(); // 일치한 숫자 개수, 로또 개수
 
         for (Lotto lotto : lottos) {
-            int matchCount = countMatchingNumbers(lotto, winNums);
+            int matchCount = countMatchingNumbers(lotto, winNum);
             int value = resultMap.getOrDefault(matchCount, 0) + 1;
             resultMap.put(matchCount, value);
         }
@@ -174,6 +175,11 @@ class LottoAssistant {
             totalWinnings +=  LottoCompany.calculatePrizeAmount(entry.getKey(), entry.getValue());
         }
         return (double) totalWinnings / totalSpent;
+    }
+
+    void inputLastWeekWinningNumbers() {
+        winNum = LottoCompany.drawLottoNumbers();
+        System.out.println("지난 주 당첨 번호는 " + winNum + "입니다.");
     }
 }
 
@@ -199,12 +205,9 @@ public class Homework0418 {
             System.out.println("구매 실패");
             return;
         }
+
         luckyAssistant.printLottoNumbers();
-
-        List<Integer> winNum = LottoCompany.drawLottoNumbers();
-        System.out.println("지난 주 당첨 번호는 " + winNum + "입니다.");
-
-        luckyAssistant.checkLottoResult(winNum);
-
+        luckyAssistant.inputLastWeekWinningNumbers();
+        luckyAssistant.checkLottoResult();
     }
 }
