@@ -41,9 +41,9 @@ classDiagram
         +generateWinningNumbers()
     }
 
-    //LottoAssistant --> Lotto
-    //LottoAssistant --> LottoStore
-    //LottoAssistant --> LottoCompany
+    LottoAssistant --> Lotto
+    LottoAssistant --> LottoStore
+    LottoAssistant --> LottoCompany
 ```
 
 ## history
