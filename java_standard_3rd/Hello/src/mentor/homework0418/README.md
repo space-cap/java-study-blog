@@ -13,12 +13,10 @@
 - **당첨 통계 출력**: 일치 개수별 당첨 횟수, 수익률을 계산하여 출력한다.
 
 ## 클래스
-- `LottoAssistant`: 로또 관리 기능 클래스
-- `Lotto`: 로또 클래스
-- `LottoStore`: 로또 판매 기능 클래스
-- `LottoCompany`: 번호 생성 및 당첨금 계산 기능 클래스
-
- 
+- `LottoAssistant`: 로또 관리 기능
+- `Lotto`: 로또
+- `LottoStore`: 로또 판매 기능
+- `LottoCompany`: 번호 생성 및 당첨금 계산 기능
 
 ## history
 ### 🟡 2025년 4월 18일  
