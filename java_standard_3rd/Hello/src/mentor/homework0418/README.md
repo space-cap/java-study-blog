@@ -21,7 +21,7 @@
 로또판매점(LottoStore) 로또 판매.  
 복권회사(LottoCompany) 당첨번호.  로또 번호생성. 당첨금 계산.
 
-### <span style="color: #0000FF">2025년 4월 20일</span>
+### **2025년 4월 20일**
 당첨금 계산을 switch 문으로 했는데 enum으로 변경을 해 보자.
 
 
