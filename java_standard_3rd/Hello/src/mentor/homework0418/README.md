@@ -27,8 +27,8 @@ classDiagram
 
     class Lotto {
         -List<Integer> numbers
-        +void setNumbers(List<Integer> numbers)
-        +List<Integer> getNumbers()
+        +setNumbers(List<Integer> numbers)
+        +getNumbers()
     }
 
     class LottoStore {
