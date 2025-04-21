@@ -12,64 +12,13 @@
 - **당첨 번호 입력**: 지난 주 당첨 번호(6개)를 입력받아 결과를 비교한다.
 - **당첨 통계 출력**: 일치 개수별 당첨 횟수, 수익률을 계산하여 출력한다.
 
-## 클래스 다이어그램
-```mermaid
-classDiagram
-    class Lotto {
-        - List~Integer~ numbers
-        + setNumbers(List~Integer~ numbers)
-        + getNumbers() List~Integer~
-    }
+## 클래스
+- `LottoAssistant`: 로또 관리 기능 클래스
+- `Lotto`: 로또 클래스
+- `LottoStore`: 로또 판매 기능 클래스
+- `LottoCompany`: 번호 생성 및 당첨금 계산 기능 클래스
 
-    class MatchResult {
-        <<enum>>
-        + SIX
-        + FIVE
-        + FOUR
-        + THREE
-        + NONE
-        - int matchCount
-        - int prize
-        + getMatchCount() int
-        + getPrize() int
-        + fromMatchCount(int matchCount) MatchResult
-    }
-
-    class LottoCompany {
-        + createNumbers() List~Integer~
-        + drawLottoNumbers() List~Integer~
-        + calculatePrizeAmount(int matchCount, int count) int
-    }
-
-    class LottoStore {
-        + getLottoCountByAmount(int price) int
-        - buyLotto() Lotto
-        + buyLottos(int count) List~Lotto~
-    }
-
-    class LottoAssistant {
-        - List~Lotto~ lottos
-        - int price
-        - int count
-        + buyLottos(int price) boolean
-        + printLottoNumbers()
-        - countMatchingNumbers(Lotto lotto, List~Integer~ winNums) int
-        + checkLottoResult(List~Integer~ winNums)
-        + calculateReturnRate(Map~Integer, Integer~ resultMap) double
-        + inputLastWeekWinningNumbers()
-    }
-
-    class Homework0418 {
-        + main(String[] args)
-    }
-
-    LottoAssistant "1" o-- "*" Lotto
-    LottoStore "1" o-- "*" Lotto
-    LottoCompany <.. LottoStore : <<static 사용>>
-    LottoCompany <.. LottoAssistant : <<static 사용>>
-    LottoAssistant <.. LottoStore : <<사용>>
-    Homework0418 --> LottoAssistant
-```
+ 
 
 ## history
 ### 🟡 2025년 4월 18일  
