@@ -27,12 +27,14 @@ classDiagram
 
     class Lotto {
         -List<Integer> numbers
-        +setNumbers(List<Integer> numbers)
-        +getNumbers()
+        +void setNumbers(List<Integer> numbers)
+        +List<Integer> getNumbers()
     }
 
     class LottoStore {
-        +Lotto buyLotto(int money)
+        +int getLottoCountByAmount(int price)
+        +List<Lotto> buyLottos(int count)
+        +private Lotto buyLotto()
     }
 
     class LottoCompany {
