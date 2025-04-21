@@ -149,7 +149,7 @@ class LottoAssistant {
     }
 
     void checkLottoResult(List<Integer> winNums) {
-        Map<Integer, Integer> resultMap = new TreeMap<>();
+        Map<Integer, Integer> resultMap = new TreeMap<>(); // 일치한 숫자 개수, 로또 개수
 
         for (Lotto lotto : lottos) {
             int matchCount = countMatchingNumbers(lotto, winNums);
