@@ -26,8 +26,9 @@ classDiagram
     }
 
     class Lotto {
-        -List<int> numbers
-        +Lotto()
+        -List<Integer> numbers
+        +void setNumbers(List<Integer> numbers)
+        +List<Integer> getNumbers()
     }
 
     class LottoStore {
@@ -40,9 +41,9 @@ classDiagram
         +generateWinningNumbers()
     }
 
-    LottoAssistant --> Lotto
-    LottoAssistant --> LottoStore
-    LottoAssistant --> LottoCompany
+    //LottoAssistant --> Lotto
+    //LottoAssistant --> LottoStore
+    //LottoAssistant --> LottoCompany
 ```
 
 ## history
