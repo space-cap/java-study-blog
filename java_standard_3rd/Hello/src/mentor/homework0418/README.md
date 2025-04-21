@@ -15,37 +15,60 @@
 ## 클래스 다이어그램
 ```mermaid
 classDiagram
-    class LottoAssistant {
-        -int money
-        -List<Lotto> lottos
-        -LottoCompany lottoCompany
-        +LottoAssistant(int money)
-        +buyLotto()
-        +checkWinningNumbers(List<int> winningNumbers)
-        +printStatistics()
-    }
-
     class Lotto {
-        -List<Integer> numbers
-        +void setNumbers(List<Integer> numbers)
-        +List<Integer> getNumbers()
+        - List~Integer~ numbers
+        + setNumbers(List~Integer~ numbers)
+        + getNumbers() List~Integer~
     }
 
-    class LottoStore {
-        +int getLottoCountByAmount(int price)
-        +List<Lotto> buyLottos(int count)
-        +private Lotto buyLotto()
+    class MatchResult {
+        <<enum>>
+        + SIX
+        + FIVE
+        + FOUR
+        + THREE
+        + NONE
+        - int matchCount
+        - int prize
+        + getMatchCount() int
+        + getPrize() int
+        + fromMatchCount(int matchCount) MatchResult
     }
 
     class LottoCompany {
-        -List<int> winningNumbers
-        +LottoCompany()
-        +generateWinningNumbers()
+        + createNumbers() List~Integer~
+        + drawLottoNumbers() List~Integer~
+        + calculatePrizeAmount(int matchCount, int count) int
     }
 
-    LottoAssistant --> Lotto
-    LottoAssistant --> LottoStore
-    LottoAssistant --> LottoCompany
+    class LottoStore {
+        + getLottoCountByAmount(int price) int
+        - buyLotto() Lotto
+        + buyLottos(int count) List~Lotto~
+    }
+
+    class LottoAssistant {
+        - List~Lotto~ lottos
+        - int price
+        - int count
+        + buyLottos(int price) boolean
+        + printLottoNumbers()
+        - countMatchingNumbers(Lotto lotto, List~Integer~ winNums) int
+        + checkLottoResult(List~Integer~ winNums)
+        + calculateReturnRate(Map~Integer, Integer~ resultMap) double
+    }
+
+    class Homework0418 {
+        + main(String[] args)
+    }
+
+    LottoAssistant "1" o-- "*" Lotto
+    LottoStore "1" o-- "*" Lotto
+    LottoCompany <.. LottoStore : <<static 사용>>
+    LottoCompany <.. LottoAssistant : <<static 사용>>
+    LottoAssistant <.. LottoStore : <<사용>>
+    Homework0418 --> LottoAssistant
+    Homework0418 --> LottoCompany
 ```
 
 ## history
