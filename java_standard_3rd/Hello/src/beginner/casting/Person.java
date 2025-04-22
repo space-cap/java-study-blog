@@ -1,18 +1,13 @@
 package beginner.casting;
 
 public class Person {
-    Casper casper;
-    Ferrari ferrari;
+    Car myCar;
 
-    public void buyCar(Casper casper) {
-        this.casper = casper;
-    }
-
-    public void buyCar(Ferrari ferrari) {
-        this.ferrari = ferrari;
+    public void buyCar(Car car) {
+        this.myCar = car;
     }
 
     public void pressBbang() {
-        casper.bbangbbang();
+        myCar.bbangbbang();
     }
 }

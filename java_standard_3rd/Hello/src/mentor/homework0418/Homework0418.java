@@ -134,20 +134,15 @@ class LottoAssistant {
     }
 
     void printLottoNumbers() {
-        for (Lotto lotto : lottos) {
-            System.out.println(lotto.getNumbers());
-        }
+        lottos.stream().forEach(i->System.out.println(i.getNumbers()));
     }
 
     private int countMatchingNumbers(Lotto lotto, List<Integer> winNums) {
-        int matchCount = 0;
-        for (var num : lotto.getNumbers()) {
-            if (winNums.contains(num)) {
-                matchCount++;
-            }
-        }
-        return matchCount;
+        return (int) lotto.getNumbers().stream()
+                .filter(winNums::contains)
+                .count();
     }
+
 
     void checkLottoResult() {
         Map<Integer, Integer> resultMap = new TreeMap<>(); // 일치한 숫자 개수, 로또 개수

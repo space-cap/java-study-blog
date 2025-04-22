@@ -44,6 +44,37 @@
 ### 🟡 2025년 4월 20일
 당첨금 계산을 switch 문으로 했는데 enum으로 변경을 해 보자.
 
+### 🟡 2025년 4월 22일
+수업 시간에 배운 람다식, 스트림으로 변경 할 수 있는 부분을 찾아보자.  
 
+**BEFORE**  
+```java
+private int countMatchingNumbers(Lotto lotto, List<Integer> winNums) {
+    int matchCount = 0;
+    for (var num : lotto.getNumbers()) {
+        if (winNums.contains(num)) {
+            matchCount++;
+        }
+    }
+    return matchCount;
+}
+```
+**AFTER**  
+```java
+private int countMatchingNumbers(Lotto lotto, List<Integer> winNums) {
+    return (int) lotto.getNumbers().stream()
+            .filter(winNums::contains)
+            .count();
+}
+```
 
-
+**BEFORE**
+```java
+for (Lotto lotto : lottos) {
+    System.out.println(lotto.getNumbers());
+}
+```
+**AFTER**
+```java
+lottos.stream().forEach(i->System.out.println(i.getNumbers()));
+```

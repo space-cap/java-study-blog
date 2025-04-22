@@ -13,8 +13,14 @@ public class CastingDemo {
         Ferrari ferrari = new Ferrari();
         daehwa.buyCar(ferrari);*/
 
-        Car car = new Car();
-        car.bbangbbang();
+        //Car car = new Car();
+        //car.bbangbbang();
+
+        Car ferrari = new Ferrari();
+        Car casper = new Casper();
+
+        Person hyunjung = new Person();
+        hyunjung.buyCar(casper);
 
     }
 }
