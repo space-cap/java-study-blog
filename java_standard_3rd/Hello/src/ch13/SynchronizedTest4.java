@@ -2,7 +2,6 @@ package ch13;
 
 public class SynchronizedTest4 {
     private int counter = 0;
-    private final Object lock = new Object();
 
     public synchronized void incrementCounter1() {
         counter++;
@@ -14,6 +13,7 @@ public class SynchronizedTest4 {
         }
     }
 
+    private final Object lock = new Object();
     public void incrementCounter3() {
         synchronized (lock) {
             counter++;
