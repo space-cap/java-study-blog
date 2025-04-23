@@ -7,13 +7,20 @@ public class Restaurant {
     List<Food> foods = new ArrayList<>();
 
     void addMenu(Food food) {
-        if (foods.stream().noneMatch(f -> f.getName().equals(food.getName()))) {
+        /*if (foods.stream().noneMatch(f -> f.getName().equals(food.getName()))) {
             foods.add(food);
-        }
+        }*/
 
         for(var f : foods) {
-            System.out.println(food.getName());
+            if(f.getName().equals(food.getName())) { // ==는 객체의 주소(참조)를 비교
+                return;
+            }
         }
+        foods.add(food);
+
+        /*if (!foods.contains(food)) {
+            foods.add(food);
+        }*/
     }
 
     void displayMenu() {
