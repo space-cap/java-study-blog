@@ -78,7 +78,7 @@ for (Lotto lotto : lottos) {
 ```java
 lottos.stream().forEach(i->System.out.println(i.getNumbers()));
 ```
-
+---
 **BEFORE**
 ```java
 static List<Integer> createNumbers() {
