@@ -47,6 +47,8 @@
 ### 🟡 2025년 4월 22일
 수업 시간에 배운 람다식, 스트림으로 변경 할 수 있는 부분을 찾아보자.  
 
+---
+
 **BEFORE**  
 ```java
 private int countMatchingNumbers(Lotto lotto, List<Integer> winNums) {
@@ -67,6 +69,8 @@ private int countMatchingNumbers(Lotto lotto, List<Integer> winNums) {
             .count();
 }
 ```
+
+---
 
 **BEFORE**
 ```java
