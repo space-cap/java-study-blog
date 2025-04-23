@@ -1,6 +1,8 @@
 package mentor.homework0418;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 class Lotto {
     private List<Integer> numbers;
@@ -57,12 +59,10 @@ enum MatchResult {
 class LottoCompany {
 
     static List<Integer> createNumbers() {
-        List<Integer> numbers = new ArrayList<>();
-        for (int i = 1; i <= 45; i++) {
-            numbers.add(i);
-        }
-        Collections.shuffle(numbers);
-        return numbers.subList(0, 6);
+        return new Random()
+                .ints(6, 1, 46)
+                .boxed()
+                .collect(Collectors.toList());
     }
 
     static List<Integer> drawLottoNumbers() {
@@ -134,7 +134,7 @@ class LottoAssistant {
     }
 
     void printLottoNumbers() {
-        lottos.stream().forEach(i->System.out.println(i.getNumbers()));
+        lottos.stream().forEach(i -> System.out.println(i.getNumbers()));
     }
 
     private int countMatchingNumbers(Lotto lotto, List<Integer> winNums) {
@@ -166,8 +166,8 @@ class LottoAssistant {
     double calculateReturnRate(Map<Integer, Integer> resultMap) {
         int totalSpent = count * 1000;
         int totalWinnings = 0;
-        for(var entry : resultMap.entrySet()) {
-            totalWinnings +=  LottoCompany.calculatePrizeAmount(entry.getKey(), entry.getValue());
+        for (var entry : resultMap.entrySet()) {
+            totalWinnings += LottoCompany.calculatePrizeAmount(entry.getKey(), entry.getValue());
         }
         return (double) totalWinnings / totalSpent;
     }

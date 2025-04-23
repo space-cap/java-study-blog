@@ -78,3 +78,27 @@ for (Lotto lotto : lottos) {
 ```java
 lottos.stream().forEach(i->System.out.println(i.getNumbers()));
 ```
+
+**BEFORE**
+```java
+static List<Integer> createNumbers() {
+	List<Integer> numbers = new ArrayList<>();
+	for (int i = 1; i <= 45; i++) {
+	    numbers.add(i);
+	}
+	Collections.shuffle(numbers);
+
+	return numbers.subList(0, 6);
+}
+```
+**AFTER**
+```java
+static List<Integer> createNumbers() {
+    return new Random()
+            .ints(6, 1, 46)
+            .boxed()
+            .collect(Collectors.toList());
+}
+```
+
+
