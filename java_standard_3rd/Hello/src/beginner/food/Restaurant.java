@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Restaurant {
-    Map<String, Food> foods = new HashMap<>();
+    Map<String, Food> foods = new HashMap<>(); // food name , Food
 
     void addMenu(Food food) {
         if (!foods.containsKey(food.getName())) {
