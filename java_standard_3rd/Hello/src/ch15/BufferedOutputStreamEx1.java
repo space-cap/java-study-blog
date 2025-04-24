@@ -19,5 +19,9 @@ public class BufferedOutputStreamEx1 {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        System.out.println("hello world");
+
     }
+
 }
