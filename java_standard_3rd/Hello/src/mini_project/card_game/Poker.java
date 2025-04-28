@@ -61,7 +61,7 @@ class Player {
 
     @Override
     public String toString() {
-        return "Player [nickName=" + nickName + " gameMoney=" + gameMoney + " cards=" + cards.length + "]";
+        return "Player [nickName=" + nickName + " gameMoney=" + gameMoney + " score=" + score + "]";
     }
 }
 
@@ -192,6 +192,10 @@ enum HandRank {
     HandRank(int score) {
         this.score = score;
     }
+
+    public int getScore() {
+        return score;
+    }
 }
 
 public class Poker {
@@ -262,7 +266,14 @@ public class Poker {
         //8. 매 게임마다 딜러는 각 플레이어의 카드를 평가하여 결과를 출력한다.
         Dealer dealer = new Dealer();
         for (var player : players) {
-            System.out.println(dealer.rankCheck(player.cards));
+            HandRank rank = dealer.rankCheck(player.cards);
+            int score = rank.getScore();
+            player.setScore(score);
+            System.out.println(rank);
+        }
+
+        for (var player : players) {
+            System.out.println(player);
         }
 
 
