@@ -23,6 +23,7 @@ class Card {
 class Player {
     private String nickName;
     private int gameMoney;
+    Card[] cards = new Card[5];
 
     Player(String nickName, int gameMoney) {
         this.nickName = nickName;
@@ -77,6 +78,7 @@ public class Poker {
         int playerCount = 4; // 총 플레이어
         int gameMoney = 10000; // 게임머니
         List<Player> players = new ArrayList<>();
+
         for (int i = 0; i < playerCount; i++) {
             players.add(new Player("Player" + i, gameMoney));
         }
@@ -95,12 +97,17 @@ public class Poker {
             arr[i] = arr[rand];
             arr[rand] = tmp;
         }
-        
+
         var shuffleCards = Arrays.stream(arr).toList();
         for (var card : shuffleCards) {
             System.out.println(card);
         }
 
+        var firstCard = shuffleCards.removeFirst();
+        System.out.println("firstCard: " + firstCard);
+
+        int size = shuffleCards.size();
+        System.out.println("size: " + size);
 
     }
 }
