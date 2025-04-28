@@ -12,5 +12,10 @@ public class RestaurantDemo {
         songaheaven.changePrice(donkatsu, 6000);
         songaheaven.changePrice(jjolmyeon, 8000);
 
+        songaheaven.changeMenuName(donkatsu, "돼지튀김");
+        songaheaven.changeMenuName(jjolmyeon, "쫄면500원");
+
+        songaheaven.displayMenu();
+
     }
 }

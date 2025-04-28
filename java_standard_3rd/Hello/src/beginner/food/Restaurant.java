@@ -23,4 +23,8 @@ public class Restaurant {
     void changePrice(Food food, int price) {
         food.setPrice(price);
     }
+
+    void changeMenuName(Food food, String name) {
+        food.setName(name);
+    }
 }

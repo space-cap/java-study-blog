@@ -15,6 +15,10 @@ public class Food {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getPrice() {
         return price;
     }
@@ -27,6 +31,8 @@ public class Food {
     public void setPrice(int price) {
         if(price >= 1000 && price <= 20000) {
             this.price = price;
+        } else {
+            System.out.println("설정 값을 벗어났습니다.");
         }
     }
 
