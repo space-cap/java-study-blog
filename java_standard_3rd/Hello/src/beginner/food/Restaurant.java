@@ -16,6 +16,11 @@ public class Restaurant {
         foods.forEach((k, v) -> {
             System.out.println("저희 음식점의 메뉴는 " + v.getName() + " 입니다.");
             System.out.println("가격은 " + v.getPrice() + "원 입니다.");
+            System.out.println("이 메뉴는 " + v.getDescription() + " 합니다.");
         });
+    }
+
+    void changePrice(Food food, int price) {
+        food.setPrice(price);
     }
 }
