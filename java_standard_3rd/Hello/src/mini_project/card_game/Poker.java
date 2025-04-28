@@ -11,6 +11,14 @@ class Card {
         this.kind = kind;
     }
 
+    public int getNum() {
+        return num;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
     @Override
     public String toString() {
         return "Card [num=" + num + ", kind=" + kind + "]";
@@ -47,6 +55,129 @@ class Player {
     public String toString() {
         return "Player [nickName=" + nickName + " gameMoney=" + gameMoney + " cards=" + cards.length + "]";
     }
+}
+
+
+class Dealer {
+    final int MAX_CARD = 5;
+    final int MAX_KIND = 4;
+    final int MAX_NUM = 13;
+    final String[] kinds = {"H", "D", "C", "S"}; // Hearts, Diamonds, Clubs, Spades
+
+    public String rankCheck(Card[] cardArr) {
+
+        int[] checkNums = new int[MAX_NUM + 1];
+        int[] checkKinds = new int[MAX_KIND];
+
+        for (int i = 0; i < MAX_CARD; i++) {
+            checkNums[cardArr[i].getNum()]++;
+        }
+
+        for (int i = 0; i < MAX_CARD; i++) {
+            if (cardArr[i].getKind() == kinds[0]) {
+                checkKinds[0]++;
+            } else if (cardArr[i].getKind() == kinds[1]) {
+                checkKinds[1]++;
+            } else if (cardArr[i].getKind() == kinds[2]) {
+                checkKinds[2]++;
+            } else if (cardArr[i].getKind() == kinds[3]) {
+                checkKinds[3]++;
+            }
+        }
+
+        // Royal
+        int[] royal = {1, 10, 11, 12, 13};
+        int royalCount = 0;
+        boolean isRoyal = false;
+        for (int i = 0; i < royal.length; i++) {
+            if (checkNums[royal[i]] == 1) {
+                royalCount++;
+            }
+        }
+        if (royalCount == 5) {
+            isRoyal = true;
+        }
+
+        // Flush
+        boolean isFlush = false;
+        for (int i = 0; i < MAX_KIND; i++) {
+            if (checkKinds[i] == MAX_CARD) {
+                isFlush = true;
+            }
+        }
+
+        if(isRoyal && isFlush){
+            return "ROYAL FLUSH";
+        }
+
+        // Straight
+        boolean isStraight = false;
+        if (cardArr[0].getNum() == cardArr[1].getNum() - 1 &&
+                cardArr[1].getNum() == cardArr[2].getNum() - 1 &&
+                cardArr[2].getNum() == cardArr[3].getNum() - 1 &&
+                cardArr[3].getNum() == cardArr[4].getNum() - 1) {
+            isStraight = true;
+        }
+
+        if (isFlush && isStraight) {
+            return "STRAIGHT FLUSH";
+        } else if (isFlush) {
+            return "FLUSH";
+        } else if (isStraight) {
+            return "STRAIGHT";
+        }
+
+        // four cards
+        for (int i = 0; i < checkNums.length; i++) {
+            if (checkNums[i] == 4) {
+                return "FOUR CARD";
+            }
+        }
+
+        // full house
+        for (int i = 0; i < checkNums.length; i++) {
+            if (checkNums[i] == 3) {
+                for (int j = 0; j < checkNums.length; j++) {
+                    if (i != j && checkNums[j] == 2) {
+                        return "FULL HOUSE";
+                    }
+                }
+            }
+        }
+
+        // three cards
+        for (int i = 0; i < checkNums.length; i++) {
+            if (checkNums[i] == 3) {
+                return "THREE CARD";
+            }
+        }
+
+        // 2 pairs
+        for (int i = 0; i < checkNums.length; i++) {
+            if (checkNums[i] == 2) {
+                for (int j = 0; j < checkNums.length; j++) {
+                    if (i != j && checkNums[j] == 2) {
+                        return "2 Pair";
+                    }
+                }
+            }
+        }
+
+        // 1 pair
+        for (int i = 0; i < checkNums.length; i++) {
+            if (checkNums[i] == 2) {
+                return "1 Pair";
+            }
+        }
+
+        return "No Rank";
+    }
+
+}
+
+
+enum HandRank {
+    Royal_Flush, Straight_Flush, Four_Card, Full_House, Three_Card, Two_Pair, One_Pair, High_Card;
 }
 
 public class Poker {
@@ -115,8 +246,10 @@ public class Poker {
         //6. 딜러는 플레이어의 카드를 평가하고 결과를 점수로 반환한다.(점수가 높을 수록 좋음)
         //7. 카드의 평가는 일반적인 포커의 랭크를 참고하여 높은 랭크에게 더 높은 점수를 준다.
         //8. 매 게임마다 딜러는 각 플레이어의 카드를 평가하여 결과를 출력한다.
-
-        
+        Dealer dealer = new Dealer();
+        for (var player : players) {
+            System.out.println(dealer.rankCheck(player.cards));
+        }
 
 
     }
