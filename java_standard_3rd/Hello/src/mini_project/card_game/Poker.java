@@ -27,8 +27,9 @@ class Card {
 
 
 class Player {
-    private String nickName;
-    private int gameMoney;
+    private String nickName = "";
+    private int gameMoney = 0;
+    private int score = 0;
     Card[] cards = new Card[5];
 
     Player(String nickName, int gameMoney) {
@@ -51,6 +52,13 @@ class Player {
         return gameMoney;
     }
 
+    public int getScore() {
+        return score;
+    }
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     @Override
     public String toString() {
         return "Player [nickName=" + nickName + " gameMoney=" + gameMoney + " cards=" + cards.length + "]";
@@ -64,7 +72,7 @@ class Dealer {
     final int MAX_NUM = 13;
     final String[] kinds = {"H", "D", "C", "S"}; // Hearts, Diamonds, Clubs, Spades
 
-    public String rankCheck(Card[] cardArr) {
+    public HandRank rankCheck(Card[] cardArr) {
 
         int[] checkNums = new int[MAX_NUM + 1];
         int[] checkKinds = new int[MAX_KIND];
@@ -177,7 +185,11 @@ class Dealer {
 
 
 enum HandRank {
-    Royal_Flush, Straight_Flush, Four_Card, Full_House, Three_Card, Two_Pair, One_Pair, High_Card;
+    Royal_Flush(10), Straight_Flush(9), Four_Card(8), Full_House(7), Three_Card(4), Two_Pair(3), One_Pair(2), High_Card(1);
+    private int score;
+    HandRank(int score) {
+        this.score = score;
+    }
 }
 
 public class Poker {
