@@ -1,8 +1,6 @@
 package mini_project.card_game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 class Card {
     private int num;
@@ -47,7 +45,7 @@ class Player {
 
     @Override
     public String toString() {
-        return "Player [nickName=" + nickName + " gameMoney=" + gameMoney + "]";
+        return "Player [nickName=" + nickName + " gameMoney=" + gameMoney + " card count=" + cards.length + "]";
     }
 }
 
@@ -98,13 +96,20 @@ public class Poker {
             arr[rand] = tmp;
         }
 
-        var shuffleCards = Arrays.stream(arr).toList();
-        for (var card : shuffleCards) {
-            System.out.println(card);
+        Queue<Card> shuffleCards = new ArrayDeque<>();
+        var tmpCards = Arrays.stream(arr).toList();
+        for (var card : tmpCards) {
+            shuffleCards.add((Card) card);
         }
 
-        var firstCard = shuffleCards.removeFirst();
-        System.out.println("firstCard: " + firstCard);
+        for (int i = 0; i < playerCount; i++) {
+            for (int j = 0; j < 5; j++) {
+                var card = shuffleCards.poll();
+                players.get(i).cards[j] = card;
+            }
+        }
+        //var firstCard = shuffleCards.poll();
+        //System.out.println("firstCard: " + firstCard);
 
         int size = shuffleCards.size();
         System.out.println("size: " + size);
