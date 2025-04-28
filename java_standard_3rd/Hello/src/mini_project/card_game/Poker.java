@@ -45,7 +45,7 @@ class Player {
 
     @Override
     public String toString() {
-        return "Player [nickName=" + nickName + " gameMoney=" + gameMoney + " card count=" + cards.length + "]";
+        return "Player [nickName=" + nickName + " gameMoney=" + gameMoney + " cards=" + cards.length + "]";
     }
 }
 
@@ -108,11 +108,16 @@ public class Poker {
                 players.get(i).cards[j] = card;
             }
         }
-        //var firstCard = shuffleCards.poll();
-        //System.out.println("firstCard: " + firstCard);
 
         int size = shuffleCards.size();
-        System.out.println("size: " + size);
+        System.out.println("remain card: " + size);
+
+        //6. 딜러는 플레이어의 카드를 평가하고 결과를 점수로 반환한다.(점수가 높을 수록 좋음)
+        //7. 카드의 평가는 일반적인 포커의 랭크를 참고하여 높은 랭크에게 더 높은 점수를 준다.
+        //8. 매 게임마다 딜러는 각 플레이어의 카드를 평가하여 결과를 출력한다.
+
+        
+
 
     }
 }
