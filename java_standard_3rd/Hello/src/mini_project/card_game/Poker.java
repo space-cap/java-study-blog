@@ -1,0 +1,106 @@
+package mini_project.card_game;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+class Card {
+    private int num;
+    private String kind; // 문양
+
+    Card(int num, String kind) {
+        this.num = num;
+        this.kind = kind;
+    }
+
+    @Override
+    public String toString() {
+        return "Card [num=" + num + ", kind=" + kind + "]";
+    }
+}
+
+
+class Player {
+    private String nickName;
+    private int gameMoney;
+
+    Player(String nickName, int gameMoney) {
+        this.nickName = nickName;
+        this.gameMoney = gameMoney;
+    }
+
+    public void setNickName(String nickName) {
+        if (nickName.length() > 20 || nickName.isEmpty()) {
+            return;
+        }
+        this.nickName = nickName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public int getGameMoney() {
+        return gameMoney;
+    }
+
+    @Override
+    public String toString() {
+        return "Player [nickName=" + nickName + " gameMoney=" + gameMoney + "]";
+    }
+}
+
+public class Poker {
+    public static void main(String[] args) {
+        System.out.println("Poker");
+
+
+        // 1. 게임 당 한벌의 카드만 사용. 카드 한벌은 서로 다른 52장의 카드로 구성.
+        int cardCount = 52;
+        int maxNum = 13; // 카드 번호 1 ~ 13 (J:11, Q:12, K:13)
+        char[] kinds = {'S', 'H', 'C', 'D'}; // Hearts, Diamonds, Clubs, Spades
+        List<Card> cards = new ArrayList<>();
+
+        for (int i = 0; i < kinds.length; i++) {
+            for (int j = 0; j < maxNum; j++) {
+                cards.add(new Card(j + 1, kinds[i] + ""));
+            }
+        }
+
+        for (var card : cards) {
+            System.out.println(card);
+        }
+
+        //2. 카드게임은 최대 4명의 플레이어가 참가 가능
+        //3. 각 플레이어에게는 게임머니 10000원이 제공된다.
+        //4. 각 플레이어는 자신만의 고유한 nickname을 가지며 nickname의 길이는 20자를 넘지못한다.
+        int playerCount = 4; // 총 플레이어
+        int gameMoney = 10000; // 게임머니
+        List<Player> players = new ArrayList<>();
+        for (int i = 0; i < playerCount; i++) {
+            players.add(new Player("Player" + i, gameMoney));
+        }
+
+        for (var player : players) {
+            System.out.println(player);
+        }
+
+
+        // 5. 딜러는 플레이어에게 서로 *다른 5장의 카드를* 나눠준다.
+        // 카드를 섞는다. shuffle
+        var arr = cards.toArray();
+        for (int i = 0; i < arr.length; i++) {
+            int rand = (int) (Math.random() * arr.length);
+            Card tmp = (Card) arr[i];
+            arr[i] = arr[rand];
+            arr[rand] = tmp;
+        }
+        
+        var shuffleCards = Arrays.stream(arr).toList();
+        for (var card : shuffleCards) {
+            System.out.println(card);
+        }
+
+
+    }
+}

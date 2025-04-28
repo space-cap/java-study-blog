@@ -3,7 +3,7 @@ package quiz;
 
 class Card {
     int num;
-    String kind;
+    String kind; // 문양
 
     Card(int num, String kind) {
         this.num = num;
