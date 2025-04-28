@@ -115,7 +115,7 @@ class Dealer {
         }
 
         if(isRoyal && isFlush){
-            return "ROYAL FLUSH";
+            return HandRank.Royal_Flush;
         }
 
         // Straight
@@ -128,17 +128,17 @@ class Dealer {
         }
 
         if (isFlush && isStraight) {
-            return "STRAIGHT FLUSH";
+            return HandRank.Straight_Flush;
         } else if (isFlush) {
-            return "FLUSH";
+            return HandRank.Flush;
         } else if (isStraight) {
-            return "STRAIGHT";
+            return HandRank.Straight;
         }
 
         // four cards
         for (int i = 0; i < checkNums.length; i++) {
             if (checkNums[i] == 4) {
-                return "FOUR CARD";
+                return HandRank.Four_Card;
             }
         }
 
@@ -147,7 +147,7 @@ class Dealer {
             if (checkNums[i] == 3) {
                 for (int j = 0; j < checkNums.length; j++) {
                     if (i != j && checkNums[j] == 2) {
-                        return "FULL HOUSE";
+                        return HandRank.Full_House;
                     }
                 }
             }
@@ -156,7 +156,7 @@ class Dealer {
         // three cards
         for (int i = 0; i < checkNums.length; i++) {
             if (checkNums[i] == 3) {
-                return "THREE CARD";
+                return HandRank.Three_Card;
             }
         }
 
@@ -165,7 +165,7 @@ class Dealer {
             if (checkNums[i] == 2) {
                 for (int j = 0; j < checkNums.length; j++) {
                     if (i != j && checkNums[j] == 2) {
-                        return "2 Pair";
+                        return HandRank.Two_Pair;
                     }
                 }
             }
@@ -174,18 +174,20 @@ class Dealer {
         // 1 pair
         for (int i = 0; i < checkNums.length; i++) {
             if (checkNums[i] == 2) {
-                return "1 Pair";
+                return HandRank.One_Pair;
             }
         }
 
-        return "No Rank";
+        return HandRank.High_Card;
     }
 
 }
 
 
 enum HandRank {
-    Royal_Flush(10), Straight_Flush(9), Four_Card(8), Full_House(7), Three_Card(4), Two_Pair(3), One_Pair(2), High_Card(1);
+    Royal_Flush(10), Straight_Flush(9), Four_Card(8),
+    Full_House(7), Flush(6), Straight(5),
+    Three_Card(4), Two_Pair(3), One_Pair(2), High_Card(1);
     private int score;
     HandRank(int score) {
         this.score = score;
