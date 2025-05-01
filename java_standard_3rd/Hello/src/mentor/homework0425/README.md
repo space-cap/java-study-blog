@@ -150,7 +150,7 @@ class Dragon extends MonsterAI {
 
 class Slime extends MonsterAI {
     void attack() {
-        System.out.println("🫧 슬라임이 튕기며 공격한다!");
+        System.out.println("슬라임이 튕기며 공격한다!");
     }
 }
 
@@ -187,6 +187,112 @@ classDiagram
 
     MonsterAI <|-- Dragon
     MonsterAI <|-- Slime
+```
+
+
+### 4. Strategy Pattern(전략 패턴)
+> 상황에 따라 전략(방법)을 바꾼다.
+> 즉, **행동을 객체로 따로 빼놓고, 필요할 때마다 갈아끼운다.**
+
+#### 캐릭터가 공격할 때!
+
+- 검으로 공격하기 ⚔️
+- 활로 공격하기 🏹
+- 마법으로 공격하기 🔮
+
+→ 상황에 따라 **공격 전략을 바꿀 수 있게** 만들면 좋아요.
+
+### ✅ 예시
+
+```java
+// 전략 인터페이스
+interface AttackStrategy {
+    void attack();
+}
+
+// 다양한 전략들
+class SwordAttack implements AttackStrategy {
+    public void attack() {
+        System.out.println("⚔️ 검으로 공격!");
+    }
+}
+
+class BowAttack implements AttackStrategy {
+    public void attack() {
+        System.out.println("🏹 활로 공격!");
+    }
+}
+
+class MagicAttack implements AttackStrategy {
+    public void attack() {
+        System.out.println("🔮 마법으로 공격!");
+    }
+}
+
+// 캐릭터 클래스
+class Character {
+    private AttackStrategy strategy;
+
+    public void setStrategy(AttackStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public void attack() {
+        strategy.attack();
+    }
+}
+
+// 사용 예
+public class Game {
+    public static void main(String[] args) {
+        Character hero = new Character();
+
+        hero.setStrategy(new SwordAttack());
+        hero.attack();  // ⚔️ 검으로 공격
+
+        hero.setStrategy(new BowAttack());
+        hero.attack();  // 🏹 활로 공격
+
+        hero.setStrategy(new MagicAttack());
+        hero.attack();  // 🔮 마법으로 공격
+    }
+}
+```
+
+> **전략 패턴**은 **"전략을 갈아끼울 수 있는 게임 캐릭터"**처럼 생각하면 된다.  
+> 상황에 따라 유연하게 행동을 바꾸게 도와주는 거라고 생각하면 된다.
+
+
+클래스 다이어그램  
+```mermaid
+classDiagram
+    class AttackStrategy {
+        <<interface>>
+        +attack()
+    }
+
+    class SwordAttack {
+        +attack()
+    }
+
+    class BowAttack {
+        +attack()
+    }
+
+    class MagicAttack {
+        +attack()
+    }
+
+    class Character {
+        -strategy: AttackStrategy
+        +setStrategy(strategy)
+        +attack()
+    }
+
+    AttackStrategy <|.. SwordAttack
+    AttackStrategy <|.. BowAttack
+    AttackStrategy <|.. MagicAttack
+    Character --> AttackStrategy : uses
 ```
 
 
