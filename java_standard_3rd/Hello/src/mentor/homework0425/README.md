@@ -6,7 +6,7 @@ factory pattern
 template method pattern  
 strategy pattern  
 
-**Proxy Pattern(프록시 패턴)**  
+### Proxy Pattern(프록시 패턴)  
 본인 작업을 위임.  
 왜? 나도 모르겠다.  
 검색에서는  
@@ -15,6 +15,7 @@ strategy pattern
 - **접근 제어**: 사용할 수 있는 조건을 걸 수 있다.
 
 그냥 본인에서 해도 될 것 같은데...
+
 
 
 
