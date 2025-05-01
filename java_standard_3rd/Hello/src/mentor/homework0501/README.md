@@ -58,6 +58,33 @@ https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces
 - sealed 클래스를 상속하는 하위 클래스들은 같은 패키지 또는 모듈 내에 있어야 합니다.
 - 추상 클래스로도 선언할 수 있습니다.
 
+**예시 코드**
+```java
+
+// `Join`는 오직 `EquiJoin`, `NonEquiJoin`, `OuterJoin`만 상속할 수 있습니다.
+sealed class Join permits EquiJoin, NonEquiJoin, OuterJoin { }
+
+// `EquiJoin`은 더 이상 상속될 수 없다.
+final class EquiJoin extends Join { }
+
+// `NonEquiJoin`는 자유롭게 상속될 수 있다.
+non-sealed class NonEquiJoin extends Join { }
+
+// `OuterJoin`은 다시 한 번 상속 제한이 가능합니다.
+sealed class OuterJoin extends Join permits LeftOuterJoin, RightOuterJoin { }
+
+final class LeftOuterJoin extends OuterJoin { }
+final class RightOuterJoin extends OuterJoin { }
+
+
+public class SealedTest {
+    public static void main(String[] args) {
+        System.out.println("Hello, Sealed");
+    }
+}
+```
+Sealed class는 자바에서 상속 구조를 명확히 제한하고, 도메인 모델링과 코드의 안정성을 높이기 위한 기능입니다.
+
 
 
 
