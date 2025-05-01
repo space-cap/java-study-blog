@@ -23,10 +23,18 @@ class Armor extends Item {
 }
 
 class Dungeon {
-    public record Pair<T, U>(T first, U second) {}
+    public record Pair<T, U>(T first, U second) {
+    }
+
     public Pair<Boolean, Item> Clear() {
         System.out.println("Dungeon is cleared.");
-        return new Pair<>(true, new Armor());
+
+        boolean isSuccess = true;
+        if (isSuccess) {
+            return new Pair<>(true, new Armor());
+        } else {
+            return new Pair<>(false, new Potion());
+        }
     }
 }
 
