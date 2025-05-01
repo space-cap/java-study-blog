@@ -39,6 +39,26 @@ System.out.println(student);        // Student[name=Kim, age=20]
 ```
 getter는 `getName()`이 아니라 `name()`처럼 필드명과 동일한 메서드로 생성됩니다.
 
+## 2. Sealed class
+**Sealed class**는 특정 클래스나 인터페이스가 상속(extends) 또는 구현(implements)될 수 있는 하위 타입을 명시적으로 제한하는 기능입니다. 
+이를 통해 상속 계층 구조를 더 명확하게 제어할 수 있으며, 의도치 않은 클래스가 슈퍼클래스를 상속하는 것을 방지할 수 있습니다. 
+Java 15에서 프리뷰로 도입되어 Java 17에서 정식 기능이 되었습니다.
+
+자세한 내용은 아래 링크 보세요.  
+https://docs.oracle.com/en/java/javase/17/language/sealed-classes-and-interfaces.html
+
+**주요 특징**
+
+- `sealed` 키워드로 선언하며, `permits` 키워드를 이용해 상속/구현을 허용할 하위 클래스를 명시합니다.
+- 지정된 클래스만 해당 sealed 클래스를 상속할 수 있습니다. 목록에 없는 클래스가 상속하려 하면 컴파일 에러가 발생합니다.
+- 하위 클래스는 반드시 `final`, `sealed`, `non-sealed` 중 하나로 선언해야 합니다.
+    - `final`: 더 이상 상속 불가
+    - `sealed`: 다시 한 번 상속 제한 가능
+    - `non-sealed`: 제한을 풀어 자유롭게 상속 가능하게 함.
+- sealed 클래스를 상속하는 하위 클래스들은 같은 패키지 또는 모듈 내에 있어야 합니다.
+- 추상 클래스로도 선언할 수 있습니다.
+
+
 
 
 
