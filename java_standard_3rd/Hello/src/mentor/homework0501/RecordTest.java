@@ -26,6 +26,10 @@ class Dungeon {
     public record Pair<T, U>(T first, U second) {
     }
 
+    /**
+     * 던전 클리어 결과와 보상을 같이 return 할 경우.
+     * @return
+     */
     public Pair<Boolean, Item> Clear() {
         System.out.println("Dungeon is cleared.");
 
