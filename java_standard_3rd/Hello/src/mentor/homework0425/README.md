@@ -6,7 +6,7 @@ factory pattern
 template method pattern  
 strategy pattern  
 
-### Proxy Pattern(프록시 패턴)  
+### 1. Proxy Pattern(프록시 패턴)  
 본인 작업을 위임.  
 왜? 나도 모르겠다.  
 검색에서는  
@@ -17,7 +17,7 @@ strategy pattern
 그냥 본인에서 해도 될 것 같은데...
 
 
-### Factory Pattern(팩토리 패턴)
+### 2. Factory Pattern(팩토리 패턴)
 **필요한 객체를 직접 만들지 않고, 공장에게 만들어 달라고 부탁하는 방법**  
 왜? 같은 인터페이스 상속받은 클래스를 한 곳에서 객체를 만들기 위해서  
 나중에 같은 인터페이스 상속받은 클래스 추가해도 공장만 살짝 바꾸면 되니깐 유지 보수가 쉽다.  
@@ -108,6 +108,86 @@ public class Game {
 ```
 
 
+
+### 3. Template Method Pattern(템플릿 메서드 패턴)
+**전체 흐름은 부모 클래스가 정하고, 자세한 부분은 자식 클래스가 정하는 디자인 패턴**  
+**뼈대는 부모가 만들고, 살은 자식이 붙이는 패턴**
+
+#### 몬스터 AI 행동!
+
+모든 몬스터는 이렇게 행동해:
+1. 나타난다
+2. 공격한다 (← **이건 몬스터마다 다름!**)
+3. 사라진다
+
+
+```java
+// 부모 클래스: 행동 순서만 정함
+abstract class MonsterAI {
+    public final void act() {
+        appear();
+        attack();   // 이건 자식이 정함
+        disappear();
+    }
+
+    void appear() {
+        System.out.println("👾 몬스터가 나타난다!");
+    }
+
+    abstract void attack();  // 자식이 정함
+
+    void disappear() {
+        System.out.println("💨 몬스터가 사라진다!");
+    }
+}
+
+// 자식 클래스: 공격 방식 다르게 정의
+class Dragon extends MonsterAI {
+    void attack() {
+        System.out.println("🔥 드래곤이 불을 뿜는다!");
+    }
+}
+
+class Slime extends MonsterAI {
+    void attack() {
+        System.out.println("🫧 슬라임이 튕기며 공격한다!");
+    }
+}
+
+
+// 사용 예
+public class Game {
+    public static void main(String[] args) {
+        MonsterAI dragon = new Dragon();
+        MonsterAI slime = new Slime();
+
+        dragon.act();
+        slime.act();
+    }
+}
+```
+
+클래스 다이어그램  
+```mermaid
+classDiagram
+    class MonsterAI {
+        +act()
+        +appear()
+        +attack()
+        +disappear()
+    }
+
+    class Dragon {
+        +attack()
+    }
+
+    class Slime {
+        +attack()
+    }
+
+    MonsterAI <|-- Dragon
+    MonsterAI <|-- Slime
+```
 
 
 
