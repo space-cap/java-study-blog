@@ -112,12 +112,12 @@ static void test(Object obj) {
 
 **주요 특징**
 - **패턴 케이스**: case 레이블에 타입 패턴(`case Type var`)을 사용할 수 있습니다.
-- **패턴 변수의 범위**: 패턴 변수(`c`, `i` 등)는 해당 case 블록 내에서만 사용할 수 있습니다[2][4].
+- **패턴 변수의 범위**: 패턴 변수(`c`, `i` 등)는 해당 case 블록 내에서만 사용할 수 있습니다.
 - **가드(when) 절**: Java 21부터는 `when` 절을 사용해 추가 조건을 붙일 수 있습니다.
   ```java
   case String s when s.length() > 5 -> System.out.println("Long string: " + s);
   ```
-- **null 처리**: case 레이블에 `case null`을 명시적으로 쓸 수 있습니다[7].
+- **null 처리**: case 레이블에 `case null`을 명시적으로 쓸 수 있습니다.
 - **switch 표현식/문 모두 지원**: 기존 switch문과 switch 표현식 모두에서 패턴 매칭을 사용할 수 있습니다.
 
 **게임아이템 예제**
