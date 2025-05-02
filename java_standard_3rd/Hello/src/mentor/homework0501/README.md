@@ -91,6 +91,7 @@ Pattern Matching for Switch는 Java 17부터 도입된 기능으로, switch문�
 
 자세한 내용은 아래 링크에
 https://openjdk.org/jeps/441
+https://blogs.oracle.com/javamagazine/post/java-pattern-matching-switch-when-null
 
 **간단한 예제**
 ```java
@@ -184,6 +185,42 @@ Process finished with exit code 0
 - 다양한 타입의 객체를 안전하고 명확하게 분기 처리할 수 있습니다.
 - instanceof와 타입 캐스팅을 반복적으로 사용할 필요가 없어집니다.
 - 코드의 가독성과 유지보수성이 크게 향상됩니다.
+
+
+## 4. Switches and null
+**전통적인 Java switch문**에서는 switch의 조건(피연산자)이 null일 경우 `NullPointerException`(NPE)이 발생합니다.
+
+https://openjdk.org/jeps/441 ( Switches and null 로 검색 )
+https://blogs.oracle.com/javamagazine/post/java-switch-expression-arrow-case-null
+https://blogs.oracle.com/javamagazine/post/java-switch-statements-expressions
+
+```java
+// Prior to Java 21
+static void testFooBarOld(String s) {
+    if (s == null) {
+        System.out.println("Oops!");
+        return;
+    }
+    switch (s) {
+        case "Foo", "Bar" -> System.out.println("Great");
+        default           -> System.out.println("Ok");
+    }
+}
+```
+
+```java
+// As of Java 21
+static void testFooBarNew(String s) {
+    switch (s) {
+        case null         -> System.out.println("Oops");
+        case "Foo", "Bar" -> System.out.println("Great");
+        default           -> System.out.println("Ok");
+    }
+}
+```
+
+
+
 
 
 
