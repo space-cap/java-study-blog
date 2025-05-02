@@ -114,7 +114,7 @@ static void test(Object obj) {
 **주요 특징**
 - **패턴 케이스**: case 레이블에 타입 패턴(`case Type var`)을 사용할 수 있습니다.
 - **패턴 변수의 범위**: 패턴 변수(`c`, `i` 등)는 해당 case 블록 내에서만 사용할 수 있습니다.
-- **가드(when) 절**: Java 21부터는 `when` 절을 사용해 추가 조건을 붙일 수 있습니다.
+- **when 절**: Java 21부터는 `when` 절을 사용해 추가 조건을 붙일 수 있습니다.
   ```java
   case String s when s.length() > 5 -> System.out.println("Long string: " + s);
   ```
@@ -245,13 +245,14 @@ static void testFooBarNew(String s) {
 - **Java 21 이상**: switch문에서 `case null`을 사용할 수 있어, null도 안전하게 분기 처리할 수 있습니다.
 
 
+## 5. Case refinement
 
+https://openjdk.org/jeps/441 ( Case refinement 로 검색 )
 
-
-
-
-
-
+- **when 절**: Java 21부터는 `when` 절을 사용해 추가 조건을 붙일 수 있습니다.
+  ```java
+  case String s when s.length() > 5 -> System.out.println("Long string: " + s);
+  ```
 
 
 
