@@ -88,7 +88,7 @@ Sealed class는 자바에서 상속 구조를 명확히 제한하고, 도메인 
 
 
 
-
+https://openjdk.org/jeps/441
 
 
 
