@@ -85,10 +85,41 @@ public class SealedTest {
 ```
 Sealed class는 자바에서 상속 구조를 명확히 제한하고, 도메인 모델링과 코드의 안정성을 높이기 위한 기능입니다.
 
+## 3. Pattern Matching for Switch
+Pattern Matching for Switch는 Java 17부터 도입된 기능으로, switch문이나 switch 표현식에서 case 레이블에 타입 패턴을 사용할 수 있게 해주는 기능입니다. 
+이로써 switch문의 활용 범위가 기존의 상수 값 비교에서 객체의 타입과 값 패턴까지 확장되어, 코드가 더 간결하고 읽기 쉬워집니다.
 
-
-
+자세한 내용은 아래 링크에
 https://openjdk.org/jeps/441
+
+**간단한 예제**
+```java
+static void test(Object obj) {
+    switch (obj) {
+        case Character c -> {
+            if (c.charValue() == 7) {
+                System.out.println("Ding!");
+            }
+            System.out.println("Character, value " + c.charValue());
+        }
+        case Integer i -> System.out.println("Integer: " + i);
+        default -> throw new IllegalStateException("Invalid argument");
+    }
+}
+```
+위 예제에서 `obj`의 타입에 따라 각 case가 실행됩니다. 
+만약 `obj`가 `Character`라면 `c`로 바인딩되어 해당 블록이 실행되고, `Integer`라면 `i`로 바인딩됩니다.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
