@@ -240,6 +240,20 @@ static void testFooBarNew(String s) {
 }
 ```
 
+## 정리
+- **Java 20 이하**: switch문의 피연산자가 null이면 NPE가 발생하므로, 반드시 switch문 진입 전에 null 체크가 필요합니다.
+- **Java 21 이상**: switch문에서 `case null`을 사용할 수 있어, null도 안전하게 분기 처리할 수 있습니다.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
