@@ -194,6 +194,25 @@ https://openjdk.org/jeps/441 ( Switches and null 로 검색 )
 https://blogs.oracle.com/javamagazine/post/java-switch-expression-arrow-case-null
 https://blogs.oracle.com/javamagazine/post/java-switch-statements-expressions
 
+
+- **삼항 연산자 등으로 null을 다른 값으로 치환**
+```java
+static void testFooBarOld(String str) {
+    switch (str == null ? "NULL" : str) {
+        case "one": ...
+        case "NULL": ...
+    }
+}
+```
+- **String.valueOf 등으로 null을 문자열로 변환**
+```java
+static void testFooBarOld(String str) {
+    switch (String.valueOf(str)) {
+        case "null": ...
+    }
+}
+```
+
 ```java
 // Prior to Java 21
 static void testFooBarOld(String s) {
