@@ -110,6 +110,83 @@ static void test(Object obj) {
 위 예제에서 `obj`의 타입에 따라 각 case가 실행됩니다. 
 만약 `obj`가 `Character`라면 `c`로 바인딩되어 해당 블록이 실행되고, `Integer`라면 `i`로 바인딩됩니다.
 
+**주요 특징**
+- **패턴 케이스**: case 레이블에 타입 패턴(`case Type var`)을 사용할 수 있습니다.
+- **패턴 변수의 범위**: 패턴 변수(`c`, `i` 등)는 해당 case 블록 내에서만 사용할 수 있습니다[2][4].
+- **가드(when) 절**: Java 21부터는 `when` 절을 사용해 추가 조건을 붙일 수 있습니다.
+  ```java
+  case String s when s.length() > 5 -> System.out.println("Long string: " + s);
+  ```
+- **null 처리**: case 레이블에 `case null`을 명시적으로 쓸 수 있습니다[7].
+- **switch 표현식/문 모두 지원**: 기존 switch문과 switch 표현식 모두에서 패턴 매칭을 사용할 수 있습니다.
+
+**게임아이템 예제**
+```java
+sealed interface GameItem permits Weapon, Charm, Gold {
+}
+
+record Weapon(String name, int damage) implements GameItem {
+}
+
+record Charm(String name, String effect) implements GameItem {
+}
+
+record Gold(int amount) implements GameItem {
+}
+
+class GameItemHandler {
+    public void handleItem(GameItem item) {
+        switch (item) {
+            case Weapon w when w.damage() >= 100 ->
+                    System.out.println("전설의 무기 획득: " + w.name() + " (공격력: " + w.damage() + ")");
+            case Weapon w -> System.out.println("무기 획득: " + w.name() + " (공격력: " + w.damage() + ")");
+            case Charm p when p.effect().equals("heal") -> System.out.println("치유 포션 획득: " + p.name());
+            case Charm p -> System.out.println("포션 획득: " + p.name() + " (효과: " + p.effect() + ")");
+            case Gold g when g.amount() >= 1000 -> System.out.println("대량의 골드 획득! " + g.amount() + " Gold");
+            case Gold g -> System.out.println("골드 획득: " + g.amount());
+            case null -> System.out.println("아이템이 없습니다.");
+            default -> System.out.println("알 수 없는 아이템입니다.");
+        }
+    }
+}
+
+public class PatternMatchingforSwitchTest {
+    public static void main(String[] args) {
+        System.out.println("Hello, Pattern Matching for Switch");
+
+        GameItemHandler handler = new GameItemHandler();
+        handler.handleItem(new Weapon("불의 검", 120));
+        handler.handleItem(new Weapon("짧은 칼", 20));
+        handler.handleItem(new Charm("강력한 치유 포션", "heal"));
+        handler.handleItem(new Charm("투명화 포션", "invisible"));
+        handler.handleItem(new Gold(5000));
+        handler.handleItem(new Gold(50));
+        handler.handleItem(null);
+    }
+}
+```
+
+실행결과
+```text
+Hello, Pattern Matching for Switch
+전설의 무기 획득: 불의 검 (공격력: 120)
+무기 획득: 짧은 칼 (공격력: 20)
+치유 포션 획득: 강력한 치유 포션
+포션 획득: 투명화 포션 (효과: invisible)
+대량의 골드 획득! 5000 Gold
+골드 획득: 50
+아이템이 없습니다.
+
+Process finished with exit code 0
+```
+
+**장점**
+- 다양한 타입의 객체를 안전하고 명확하게 분기 처리할 수 있습니다.
+- instanceof와 타입 캐스팅을 반복적으로 사용할 필요가 없어집니다.
+- 코드의 가독성과 유지보수성이 크게 향상됩니다.
+
+
+
 
 
 
