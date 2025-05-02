@@ -227,8 +227,8 @@ static void testFooBarOld(String s) {
 }
 ```
 
-Java 21부터는 switch문에서 `case null`을 명시적으로 사용할 수 있습니다. 
-즉, switch문의 피연산자가 null이어도 NPE가 발생하지 않고, `case null`이 있으면 해당 블록이 실행됩니다.
+- Java 21부터는 switch문에서 `case null`을 명시적으로 사용할 수 있습니다.  
+즉, switch문의 피연산자가 null이어도 NPE가 발생하지 않고, `case null`이 있으면 해당 블록이 실행됩니다.  
 ```java
 // As of Java 21
 static void testFooBarNew(String s) {
