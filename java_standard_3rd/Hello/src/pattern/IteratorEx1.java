@@ -1,6 +1,8 @@
 package pattern;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 class Book {
     private String name;
@@ -13,19 +15,22 @@ class Book {
 }
 
 class BookShelf implements Iterable<Book>{
-    private Book[] books;
+    private List<Book> books;
     private int last = 0;
 
     public BookShelf(int size) {
-        books = new Book[size];
+        books = new ArrayList<>(size);
     }
 
     public void appendBook(Book book) {
-        books[last++] = book;
+        //books[last++] = book;
+        books.add(book);
+        last++;
     }
 
     public Book getBookAt(int index) {
-        return books[index];
+        //return books[index];
+        return books.get(index);
     }
 
     public int getLength() {
