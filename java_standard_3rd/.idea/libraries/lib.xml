@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Hello/lib/h2-2.3.232.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Hello/lib/ojdbc17.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
