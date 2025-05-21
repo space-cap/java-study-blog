@@ -101,19 +101,22 @@ class SafeFrame extends Frame implements ActionListener, Context {
         add(panel, BorderLayout.SOUTH);
         pack();
         setVisible(true);
-        buttonUse.addActionListener(this);
+        // buttonUse.addActionListener(this);
+        buttonUse.addActionListener(e-> {
+            state0519.useSafe(this);
+        });
         buttonAlarm.addActionListener(this);
         buttonPhoto.addActionListener(this);
         buttonExit.addActionListener(this);
+
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.toString());
 
-        if(e.getSource() == buttonUse) {
-            state0519.useSafe(this);
-        } else if(e.getSource() == buttonAlarm) {
+        if(e.getSource() == buttonAlarm) {
             state0519.doAlarm(this);
         } else if(e.getSource() == buttonPhoto) {
             state0519.doPhoto(this);
