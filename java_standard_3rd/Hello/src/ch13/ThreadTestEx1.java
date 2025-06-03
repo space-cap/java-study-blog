@@ -1,14 +1,20 @@
 package ch13;
 
+//
+
+
+import java.util.concurrent.locks.ReentrantLock;
+
 class Counter {
     private int count = 0;
+    private ReentrantLock lock = new ReentrantLock();
 
-    //    public synchronized void increment() {
-//        count++; // 문제 지점: 비원자적(non-atomic) 연산
-//    }
     public void increment() {
-        synchronized (this) { // this 객체 락 사용
+        lock.lock();
+        try {
             count++;
+        } finally {
+            lock.unlock();
         }
     }
 
