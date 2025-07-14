@@ -1,0 +1,429 @@
+-- MySQL 8.0 데이터베이스 스키마 (온라인 서점)
+
+-- -----------------------------------------------------
+-- 데이터베이스 삭제 및 생성
+-- -----------------------------------------------------
+DROP DATABASE IF EXISTS `bookstore_db`;
+CREATE DATABASE `bookstore_db`
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE `bookstore_db`;
+
+
+-- =====================================================
+-- 1. 시스템 및 공통 코드 관리 테이블
+-- =====================================================
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`common_code`
+-- 공통 코드 테이블: 시스템 전반에 사용되는 코드 값을 관리합니다.
+-- 예: 사용자 상태, 상품 판매 상태, 주문 상태, 배송 상태, 결제 상태 등
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`common_code` (
+    `code_group`  VARCHAR(50)  NOT NULL COMMENT '코드 그룹 (예: USER_STATUS, PRODUCT_SALE_STATUS)',
+    `code_value`  VARCHAR(50)  NOT NULL COMMENT '코드 값 (예: ACTIVE, SELLING)',
+    `code_name`   VARCHAR(100) NOT NULL COMMENT '코드 명칭 (예: 활성, 판매중)',
+    `description` VARCHAR(255) NULL     COMMENT '코드 설명',
+    `order_seq`   INT          NOT NULL DEFAULT 0 COMMENT '정렬 순서',
+    `use_yn`      CHAR(1)      NOT NULL DEFAULT 'Y' COMMENT '사용 여부 (Y: 사용, N: 미사용)',
+    `reg_dt`      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`      DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`code_group`, `code_value`)
+) ENGINE = InnoDB COMMENT = '공통 코드 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`system_configs`
+-- 시스템 설정 관리 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`system_configs` (
+    `config_key`   VARCHAR(100) NOT NULL COMMENT '설정 키 (예: SITE_NAME, DEFAULT_PAGE_SIZE)',
+    `config_value` VARCHAR(500) NULL     COMMENT '설정 값',
+    `description`  VARCHAR(255) NULL     COMMENT '설정 설명',
+    `upd_dt`       DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '최종 수정일시',
+    PRIMARY KEY (`config_key`)
+) ENGINE = InnoDB COMMENT = '시스템 설정 관리 테이블';
+
+
+-- =====================================================
+-- 2. 사용자, 역할, 권한 관련 테이블
+-- =====================================================
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`users`
+-- 사용자 정보 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`users` (
+    `user_id`             BIGINT       NOT NULL AUTO_INCREMENT COMMENT '사용자 고유 ID',
+    `login_id`            VARCHAR(50)  NOT NULL UNIQUE COMMENT '로그인 아이디',
+    `user_nm`             VARCHAR(100) NOT NULL COMMENT '사용자 이름',
+    `email`               VARCHAR(255) NOT NULL COMMENT '이메일 주소',
+    `password`            VARCHAR(255) NOT NULL COMMENT '비밀번호 (해시값 저장)',
+    `phone_no`            VARCHAR(20)  NULL     COMMENT '연락처',
+    `address`             VARCHAR(500) NULL     COMMENT '주소',
+    `join_dt`             DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '가입일시',
+    `last_login_dt`       DATETIME     NULL     COMMENT '최종 로그인 일시',
+    `user_grade_group_cd` VARCHAR(50)  NOT NULL COMMENT '회원 등급 코드 그룹 (COMMON_CODE 참조)',
+    `user_grade_cd`       VARCHAR(50)  NOT NULL COMMENT '회원 등급 코드 (COMMON_CODE 참조)',
+    `user_status_group_cd` VARCHAR(50)  NOT NULL COMMENT '회원 상태 코드 그룹 (COMMON_CODE 참조)',
+    `user_status_cd`      VARCHAR(50)  NOT NULL COMMENT '회원 상태 코드 (COMMON_CODE 참조: 활성, 비활성, 휴면, 탈퇴)',
+    `del_yn`              CHAR(1)      NOT NULL DEFAULT 'N' COMMENT '삭제 여부 (Y: 삭제, N: 미삭제)',
+    `reg_dt`              DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`              DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`user_id`)
+) ENGINE = InnoDB COMMENT = '사용자 정보 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`roles`
+-- 역할 정보 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`roles` (
+    `role_id`     VARCHAR(50)  NOT NULL COMMENT '역할 고유 ID',
+    `role_name`   VARCHAR(100) NOT NULL UNIQUE COMMENT '역할 이름 (예: SUPER_ADMIN, PRODUCT_MANAGER)',
+    `description` VARCHAR(255) NULL     COMMENT '역할 설명',
+    `reg_dt`      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`      DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`role_id`)
+) ENGINE = InnoDB COMMENT = '역할 정보 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`permissions`
+-- 권한 정보 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`permissions` (
+    `permission_id`   VARCHAR(50)  NOT NULL COMMENT '권한 고유 ID',
+    `permission_name` VARCHAR(100) NOT NULL UNIQUE COMMENT '권한 이름 (예: PRODUCT_CREATE, ORDER_VIEW)',
+    `description`     VARCHAR(255) NULL     COMMENT '권한 설명',
+    `reg_dt`          DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`          DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`permission_id`)
+) ENGINE = InnoDB COMMENT = '권한 정보 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`role_permissions`
+-- 역할과 권한 연결 테이블 (N:M 관계)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`role_permissions` (
+    `role_id`       VARCHAR(50) NOT NULL COMMENT '역할 고유 ID',
+    `permission_id` VARCHAR(50) NOT NULL COMMENT '권한 고유 ID',
+    `reg_dt`        DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    PRIMARY KEY (`role_id`, `permission_id`)
+) ENGINE = InnoDB COMMENT = '역할-권한 연결 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`user_roles`
+-- 사용자와 역할 연결 테이블 (N:M 관계)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`user_roles` (
+    `user_id` BIGINT      NOT NULL COMMENT '사용자 고유 ID',
+    `role_id` VARCHAR(50) NOT NULL COMMENT '역할 고유 ID',
+    `reg_dt`  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    PRIMARY KEY (`user_id`, `role_id`)
+) ENGINE = InnoDB COMMENT = '사용자-역할 연결 테이블';
+
+
+-- =====================================================
+-- 3. 상품(책) 관련 테이블
+-- =====================================================
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`products`
+-- 상품 정보 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`products` (
+    `prod_id`                   BIGINT       NOT NULL AUTO_INCREMENT COMMENT '상품 고유 ID',
+    `isbn`                      VARCHAR(20)  NOT NULL COMMENT '국제 표준 도서 번호',
+    `prod_nm`                   VARCHAR(255) NOT NULL COMMENT '상품 이름 (책 이름)',
+    `publisher`                 VARCHAR(100) NOT NULL COMMENT '출판사',
+    `author`                    VARCHAR(100) NOT NULL COMMENT '저자',
+    `image_url`                 VARCHAR(500) NULL     COMMENT '책 이미지 URL',
+    `preview_pdf_url`           VARCHAR(500) NULL     COMMENT '미리보기 PDF URL',
+    `description`               TEXT         NULL     COMMENT '책 상세 설명',
+    `price`                     DECIMAL(10, 2) NOT NULL COMMENT '책 가격',
+    `book_size`                 VARCHAR(50)  NULL     COMMENT '책 크기 (예: A4, B5)',
+    `rating`                    DECIMAL(2, 1) NULL    DEFAULT 0.0 COMMENT '평점 (0.0 ~ 5.0)',
+    `sales_index`               INT          NULL     DEFAULT 0 COMMENT '판매 지수',
+    `stock_qty`                 INT          NOT NULL DEFAULT 0 COMMENT '재고 수량',
+    `prod_sale_status_group_cd` VARCHAR(50)  NOT NULL COMMENT '상품 판매 상태 코드 그룹 (COMMON_CODE 참조)',
+    `prod_sale_status_cd`       VARCHAR(50)  NOT NULL COMMENT '상품 판매 상태 코드 (COMMON_CODE 참조: 판매중, 절판, 일시품절, 입고예정)',
+    `reg_dt`                    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `del_yn`                    CHAR(1)      NOT NULL DEFAULT 'N' COMMENT '삭제 여부 (Y: 삭제, N: 미삭제)',
+    `upd_dt`                    DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`prod_id`)
+) ENGINE = InnoDB COMMENT = '상품 정보 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`categories`
+-- 상품 카테고리 테이블 (대, 중, 소 분류)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`categories` (
+    `cate_id`      INT          NOT NULL AUTO_INCREMENT COMMENT '카테고리 고유 ID',
+    `parent_cate_id` INT          NULL     COMMENT '상위 카테고리 ID (최상위는 NULL)',
+    `cate_nm`      VARCHAR(100) NOT NULL COMMENT '카테고리 명칭',
+    `cate_level`   INT          NOT NULL COMMENT '카테고리 레벨 (1: 대분류, 2: 중분류, 3: 소분류)',
+    `reg_dt`       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`       DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`cate_id`)
+) ENGINE = InnoDB COMMENT = '상품 카테고리 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`product_categories`
+-- 상품과 카테고리 연결 테이블 (N:M 관계)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`product_categories` (
+    `prod_id` BIGINT NOT NULL COMMENT '상품 고유 ID',
+    `cate_id` INT    NOT NULL COMMENT '카테고리 고유 ID',
+    PRIMARY KEY (`prod_id`, `cate_id`)
+) ENGINE = InnoDB COMMENT = '상품-카테고리 연결 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`product_tags`
+-- 상품 태그/키워드 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`product_tags` (
+    `tag_id`   INT          NOT NULL AUTO_INCREMENT COMMENT '태그 고유 ID',
+    `tag_name` VARCHAR(100) NOT NULL UNIQUE COMMENT '태그 이름 (예: #베스트셀러, #신간)',
+    `reg_dt`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    PRIMARY KEY (`tag_id`)
+) ENGINE = InnoDB COMMENT = '상품 태그/키워드 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`product_tag_mapping`
+-- 상품과 태그 연결 테이블 (N:M 관계)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`product_tag_mapping` (
+    `prod_id` BIGINT   NOT NULL COMMENT '상품 고유 ID',
+    `tag_id`  INT      NOT NULL COMMENT '태그 고유 ID',
+    `reg_dt`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    PRIMARY KEY (`prod_id`, `tag_id`)
+) ENGINE = InnoDB COMMENT = '상품-태그 연결 테이블';
+
+
+-- =====================================================
+-- 4. 주문/결제/배송 관련 테이블
+-- =====================================================
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`orders`
+-- 주문 정보 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`orders` (
+    `order_id`              BIGINT       NOT NULL AUTO_INCREMENT COMMENT '주문 고유 ID',
+    `user_id`               BIGINT       NOT NULL COMMENT '주문자 사용자 고유 ID',
+    `order_dt`              DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '주문 일시',
+    `total_amt`             DECIMAL(10, 2) NOT NULL COMMENT '총 주문 금액',
+    `order_status_group_cd` VARCHAR(50)  NOT NULL COMMENT '주문 상태 코드 그룹 (COMMON_CODE 참조)',
+    `order_status_cd`       VARCHAR(50)  NOT NULL COMMENT '주문 상태 코드 (COMMON_CODE 참조: 주문접수, 결제완료, 배송준비중, 배송중, 배송완료, 주문취소, 환불완료)',
+    `del_yn`                CHAR(1)      NOT NULL DEFAULT 'N' COMMENT '삭제 여부 (Y: 삭제, N: 미삭제)',
+    `reg_dt`                DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`                DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`order_id`)
+) ENGINE = InnoDB COMMENT = '주문 정보 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`order_items`
+-- 주문 상품 상세 정보 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`order_items` (
+    `order_item_id`  BIGINT       NOT NULL AUTO_INCREMENT COMMENT '주문 상품 고유 ID',
+    `order_id`       BIGINT       NOT NULL COMMENT '주문 고유 ID',
+    `prod_id`        BIGINT       NOT NULL COMMENT '상품 고유 ID',
+    `qty`            INT          NOT NULL COMMENT '주문 수량',
+    `price_at_order` DECIMAL(10, 2) NOT NULL COMMENT '주문 당시 상품 가격',
+    `reg_dt`         DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`         DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`order_item_id`)
+) ENGINE = InnoDB COMMENT = '주문 상품 상세 정보 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`deliveries`
+-- 배송 정보 테이블
+-- (주문 전체가 아닌, 특정 시점에 이루어지는 배송 건을 의미)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`deliveries` (
+    `delivery_id`              BIGINT       NOT NULL AUTO_INCREMENT COMMENT '배송 고유 ID',
+    `order_id`                 BIGINT       NOT NULL COMMENT '관련 주문 고유 ID',
+    `delivery_address`         VARCHAR(500) NOT NULL COMMENT '배송지 주소',
+    `delivery_status_group_cd` VARCHAR(50)  NOT NULL COMMENT '배송 상태 코드 그룹 (COMMON_CODE 참조)',
+    `delivery_status_cd`       VARCHAR(50)  NOT NULL COMMENT '배송 상태 코드 (COMMON_CODE 참조: 배송준비중, 배송중, 배송완료, 배송취소)',
+    `tracking_no`              VARCHAR(100) NULL     COMMENT '운송장 번호',
+    `delivery_start_dt`        DATETIME     NULL     COMMENT '배송 시작 일시',
+    `delivery_complete_dt`     DATETIME     NULL     COMMENT '배송 완료 일시',
+    `del_yn`                   CHAR(1)      NOT NULL DEFAULT 'N' COMMENT '삭제 여부 (Y: 삭제, N: 미삭제)',
+    `reg_dt`                   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`                   DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`delivery_id`)
+) ENGINE = InnoDB COMMENT = '배송 정보 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`delivery_items`
+-- 배송 상품 상세 정보 테이블 (어떤 배송에 어떤 주문 상품이 포함되었는지)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`delivery_items` (
+    `delivery_item_id` BIGINT   NOT NULL AUTO_INCREMENT COMMENT '배송 상품 고유 ID',
+    `delivery_id`      BIGINT   NOT NULL COMMENT '배송 고유 ID',
+    `order_item_id`    BIGINT   NOT NULL COMMENT '주문 상품 고유 ID',
+    `shipped_qty`      INT      NOT NULL COMMENT '해당 배송으로 발송된 수량',
+    `reg_dt`           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`           DATETIME NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`delivery_item_id`)
+) ENGINE = InnoDB COMMENT = '배송 상품 상세 정보 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`payments`
+-- 결제 정보 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`payments` (
+    `payment_id`              BIGINT       NOT NULL AUTO_INCREMENT COMMENT '결제 고유 ID',
+    `order_id`                BIGINT       NOT NULL COMMENT '주문 고유 ID',
+    `payment_method`          VARCHAR(50)  NOT NULL COMMENT '결제 수단 (예: KAKAO_PAY, CREDIT_CARD)',
+    `payment_amt`             DECIMAL(10, 2) NOT NULL COMMENT '결제 금액',
+    `payment_dt`              DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '결제 일시',
+    `transaction_id`          VARCHAR(255) NULL     COMMENT '결제 시스템 트랜잭션 ID',
+    `payment_status_group_cd` VARCHAR(50)  NOT NULL COMMENT '결제 상태 코드 그룹 (COMMON_CODE 참조)',
+    `payment_status_cd`       VARCHAR(50)  NOT NULL COMMENT '결제 상태 코드 (COMMON_CODE 참조: 결제대기, 결제완료, 결제취소, 환불완료)',
+    `del_yn`                  CHAR(1)      NOT NULL DEFAULT 'N' COMMENT '삭제 여부 (Y: 삭제, N: 미삭제)',
+    `reg_dt`                  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`                  DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`payment_id`)
+) ENGINE = InnoDB COMMENT = '결제 정보 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`carts`
+-- 장바구니 정보 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`carts` (
+    `cart_id` BIGINT       NOT NULL AUTO_INCREMENT COMMENT '장바구니 고유 ID',
+    `user_id` BIGINT       NOT NULL COMMENT '사용자 고유 ID',
+    `prod_id` BIGINT       NOT NULL COMMENT '상품 고유 ID',
+    `qty`     INT          NOT NULL DEFAULT 1 COMMENT '담은 수량',
+    `add_dt`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '장바구니에 추가된 일시',
+    `upd_dt`  DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`cart_id`)
+) ENGINE = InnoDB COMMENT = '장바구니 정보 테이블';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`wishlists`
+-- 위시리스트 (관심 상품) 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`wishlists` (
+    `wishlist_id` BIGINT       NOT NULL AUTO_INCREMENT COMMENT '위시리스트 고유 ID',
+    `user_id`     BIGINT       NOT NULL COMMENT '사용자 ID',
+    `prod_id`     BIGINT       NOT NULL COMMENT '상품 ID',
+    `add_dt`      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '위시리스트에 추가된 일시',
+    PRIMARY KEY (`wishlist_id`)
+) ENGINE = InnoDB COMMENT = '위시리스트 (관심 상품) 테이블';
+
+
+-- =====================================================
+-- 5. 사용자 활동 및 이력 관련 테이블
+-- =====================================================
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`user_status_hist`
+-- 사용자 상태 변경 이력 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`user_status_hist` (
+    `hist_id`     BIGINT       NOT NULL AUTO_INCREMENT COMMENT '이력 고유 ID',
+    `user_id`     BIGINT       NOT NULL COMMENT '사용자 고유 ID',
+    `old_status_cd` VARCHAR(50)  NULL     COMMENT '이전 상태 코드',
+    `new_status_cd` VARCHAR(50)  NOT NULL COMMENT '새로운 상태 코드',
+    `change_dt`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '변경 일시',
+    `changed_by`  VARCHAR(50)  NULL     COMMENT '변경자 (관리자 ID 또는 시스템)',
+    PRIMARY KEY (`hist_id`)
+) ENGINE = InnoDB COMMENT = '사용자 상태 변경 이력';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`password_reset_tokens`
+-- 비밀번호 재설정 토큰 관리 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`password_reset_tokens` (
+    `token_id`   BIGINT       NOT NULL AUTO_INCREMENT COMMENT '토큰 고유 ID',
+    `user_id`    BIGINT       NOT NULL COMMENT '사용자 ID',
+    `token`      VARCHAR(255) NOT NULL UNIQUE COMMENT '생성된 재설정 토큰',
+    `expires_at` DATETIME     NOT NULL COMMENT '토큰 만료 시간',
+    `is_used`    CHAR(1)      NOT NULL DEFAULT 'N' COMMENT '토큰 사용 여부 (Y: 사용됨, N: 사용되지 않음)',
+    `reg_dt`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    PRIMARY KEY (`token_id`)
+) ENGINE = InnoDB COMMENT = '비밀번호 재설정 토큰 관리';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`product_status_hist`
+-- 상품 상태 변경 이력 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`product_status_hist` (
+    `hist_id`     BIGINT       NOT NULL AUTO_INCREMENT COMMENT '이력 고유 ID',
+    `prod_id`     BIGINT       NOT NULL COMMENT '상품 고유 ID',
+    `old_status_cd` VARCHAR(50)  NULL     COMMENT '이전 상태 코드',
+    `new_status_cd` VARCHAR(50)  NOT NULL COMMENT '새로운 상태 코드',
+    `change_dt`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '변경 일시',
+    `changed_by`  VARCHAR(50)  NULL     COMMENT '변경자 (관리자 ID 또는 시스템)',
+    PRIMARY KEY (`hist_id`)
+) ENGINE = InnoDB COMMENT = '상품 상태 변경 이력';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`order_status_hist`
+-- 주문 상태 변경 이력 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`order_status_hist` (
+    `hist_id`     BIGINT       NOT NULL AUTO_INCREMENT COMMENT '이력 고유 ID',
+    `order_id`    BIGINT       NOT NULL COMMENT '주문 고유 ID',
+    `old_status_cd` VARCHAR(50)  NULL     COMMENT '이전 상태 코드',
+    `new_status_cd` VARCHAR(50)  NOT NULL COMMENT '새로운 상태 코드',
+    `change_dt`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '변경 일시',
+    `changed_by`  VARCHAR(50)  NULL     COMMENT '변경자 (관리자 ID 또는 시스템)',
+    PRIMARY KEY (`hist_id`)
+) ENGINE = InnoDB COMMENT = '주문 상태 변경 이력';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`delivery_status_hist`
+-- 배송 상태 변경 이력 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`delivery_status_hist` (
+    `hist_id`     BIGINT       NOT NULL AUTO_INCREMENT COMMENT '이력 고유 ID',
+    `delivery_id` BIGINT       NOT NULL COMMENT '배송 고유 ID',
+    `old_status_cd` VARCHAR(50)  NULL     COMMENT '이전 상태 코드',
+    `new_status_cd` VARCHAR(50)  NOT NULL COMMENT '새로운 상태 코드',
+    `change_dt`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '변경 일시',
+    `changed_by`  VARCHAR(50)  NULL     COMMENT '변경자 (관리자 ID 또는 시스템)',
+    PRIMARY KEY (`hist_id`)
+) ENGINE = InnoDB COMMENT = '배송 상태 변경 이력';
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`payment_status_hist`
+-- 결제 상태 변경 이력 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`payment_status_hist` (
+    `hist_id`     BIGINT       NOT NULL AUTO_INCREMENT COMMENT '이력 고유 ID',
+    `payment_id`  BIGINT       NOT NULL COMMENT '결제 고유 ID',
+    `old_status_cd` VARCHAR(50)  NULL     COMMENT '이전 상태 코드',
+    `new_status_cd` VARCHAR(50)  NOT NULL COMMENT '새로운 상태 코드',
+    `change_dt`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '변경 일시',
+    `changed_by`  VARCHAR(50)  NULL     COMMENT '변경자 (관리자 ID 또는 시스템)',
+    PRIMARY KEY (`hist_id`)
+) ENGINE = InnoDB COMMENT = '결제 상태 변경 이력';
+
+
+-- =====================================================
+-- 6. 프로모션/할인 관련 테이블
+-- =====================================================
+
+-- -----------------------------------------------------
+-- Table `bookstore_db`.`promotions`
+-- 상품 프로모션/할인 테이블
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bookstore_db`.`promotions` (
+    `promo_id`       BIGINT       NOT NULL AUTO_INCREMENT COMMENT '프로모션 고유 ID',
+    `promo_name`     VARCHAR(255) NOT NULL COMMENT '프로모션 이름',
+    `promo_type`     VARCHAR(50)  NOT NULL COMMENT '할인 유형 (예: PERCENTAGE, FIXED_AMOUNT)',
+    `discount_value` DECIMAL(10, 2) NOT NULL COMMENT '할인 값 (예: 10.00, 5000)',
+    `start_dt`       DATETIME     NOT NULL COMMENT '시작일시',
+    `end_dt`         DATETIME     NOT NULL COMMENT '종료일시',
+    `min_order_amt`  DECIMAL(10, 2) NULL     COMMENT '최소 주문 금액 (조건)',
+    `target_type`    VARCHAR(50)  NOT NULL COMMENT '적용 대상 (예: ALL_PRODUCTS, SPECIFIC_PRODUCT, CATEGORY)',
+    `target_id`      VARCHAR(50)  NULL     COMMENT '적용 대상 ID (상품 ID, 카테고리 ID 등)',
+    `use_yn`         CHAR(1)      NOT NULL DEFAULT 'Y' COMMENT '사용 여부',
+    `reg_dt`         DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일시',
+    `upd_dt`         DATETIME     NULL     ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    PRIMARY KEY (`promo_id`)
+) ENGINE = InnoDB COMMENT = '상품 프로모션/할인 테이블';
