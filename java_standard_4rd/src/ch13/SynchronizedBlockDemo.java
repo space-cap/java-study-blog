@@ -14,9 +14,7 @@ public class SynchronizedBlockDemo {
         }
 
         public int get() {
-            synchronized (lock) {
-                return value;
-            }
+            return value;
         }
     }
 
