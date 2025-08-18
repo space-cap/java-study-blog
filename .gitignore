@@ -25,3 +25,4 @@ replay_pid*
 /workspace-spring/.metadata
 *.properties
 /java_standard_3rd/Hello/.idea
+/SimpleChat/.idea
